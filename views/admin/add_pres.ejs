@@ -1,0 +1,381 @@
+		<%- include("layout/header1")-%>
+		<link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+		<link href="https://unpkg.com/vis-timeline@latest/styles/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />
+				<style type="text/css">
+				#visualization {
+				padding:2rem;
+				background:lightgray;
+				width: 100%;
+				height: 30hv;
+				border: 1px solid lightgray;
+				}
+				</style>
+		<%- include("layout/header2")-%>
+        <%- include("layout/NavBar")-%>
+          <!-- content-wrapper starts -->
+        <!-- Content -->
+        <div class="content" style = "min-height:78vh" >
+		<input id = "hospital_name" value = "<%- HOSPITAL_NAME %>" hidden />
+		<input id = "pa_id" value = "<%- p_id %>" hidden />
+            <!-- Animated -->
+            <div class="animated fadeIn">
+                <!-- Orders -->
+                <div class="orders">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    
+									
+                    <div class="col-lg-12"> <!-- main form panel -->
+					
+                    <div class = "row" >
+					<div id="visualization"></div>
+					
+                    <div class="col-lg-12 p-3">
+                        <div class = "col-lg-12">
+                   
+                            <div class="card-body mb-2">
+                                <!-- Credit Card -->
+									<div class="col-md-12">	
+									<button id = "add_prescription" type = "button" class="btn btn-sm btn-outline-light text-success float-left ml-2">Add</button>
+									<button type = "button" class="btn btn-sm btn-outline-light text-success clear-data_info float-left ml-2">Clear All</button>									
+									<a href = "../<%- session.mainrole %>/patients" class="btn btn-sm btn-outline-dark float-right ml-2 ">Main Menu</a>									
+                                     </div>							
+                            </div>
+                        </div> <!-- .card -->
+						
+							<div class = "col-lg-12 p-3" >
+							<div class = "col-lg-12 show-data_info" >
+							</div>
+							<div class = "col-lg-12 p-3" >
+							<button id = "save_pres" class = "btn btn-sm btn-outline-dark" >save</button>
+							</div>
+							</div>
+
+                    </div><!--/.col-->
+
+					</div>     
+					
+                    </div> <!-- main form panel end -->
+									
+									
+                                </div>
+							</div> <!-- /.card -->
+                        </div>  <!-- /.col-lg-12 -->
+					</div>
+                </div>
+                <!-- /.orders -->
+
+
+            <!-- /#add-category -->
+            </div>
+            <!-- .animated -->
+        </div>
+		
+ <!-- View Model formsdata-->
+<div class="modal fade" id="DataModalview" tabindex="-1" role="dialog" aria-labelledby="DataModalview" aria-hidden="true">
+  <div class="modal-dialog"  role="document">
+    <div class="modal-content" style = "width:54rem;" >
+      <div class="modal-header">
+		<div id="canvas"></div>
+      </div>
+<input hidden id = "action" value = "" />
+<input hidden id = "data_id" value = "" />
+
+
+<div id = "payment_view"></div>
+ 	  
+    </div>
+  </div>
+</div>			
+<!-- View Model end formsdata-->		
+
+
+ <!-- Payment View Model formsdata-->
+<!-- Modal bed formsdata-->
+<div class="modal fade" id="PayModalview" tabindex="-1" role="dialog" aria-labelledby="PayModalview" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Paymnet</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+      </div>
+	  
+<form id = "add_pay_form" >
+  <div class="modal-body p-5">
+  <div class="form-group">
+    <label>payer Name</label>
+    <input type = "text" class="form-control" name = "payee" />
+  </div>  
+  <div class="form-group">
+    <label>Amount</label>
+    <input type = "number" class="form-control" name = "amount" />
+  </div>   
+  </div>
+  
+      <div class="modal-footer">
+		<button type="button" class="btn btn-sm btn-outline-success _submit_pay_data" data-dismiss="modal">Submit</button>
+        <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">Cancel</button>
+      </div>
+</form>  	  
+    </div>
+  </div>
+</div>		
+<!-- View Model end formsdata -->	
+
+ <!-- View Model prescription-->
+<div class="modal fade" id="PrescriptionModalview" tabindex="-1" role="dialog" aria-labelledby="DataModalview" aria-hidden="true">
+  <div class="modal-dialog"  role="document">
+    <div class="modal-content"  >
+      <div class="modal-header">
+        <h5 class="modal-title">Add Prescription</h5>
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+			<span aria-hidden="true">&times;</span>
+		</button>	  
+      </div>
+<form id = "add_Prescription_form" >
+  <div class="modal-body p-5">
+  <div class="form-group">
+    <label>Medicine Name</label>
+    <input type = "text" class="form-control" name = "medi_name" />
+  </div>   
+  </div>
+ 
+  
+      <div class="modal-footer">
+		<button type="button" class="btn btn-sm btn-outline-success _submit_pres_data" data-dismiss="modal">Submit</button>
+        <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">Cancel</button>
+      </div>
+</form> 
+
+
+ 	  
+    </div>
+  </div>
+</div>			
+<!-- View Model end prescription-->	
+
+
+        <!-- /.content -->								
+          <!-- content-wrapper ends -->
+		<%- include("layout/footer1")-%>
+<script src="js/_common/moment.min.js" ></script>
+<script src="js/_common/bootstrap-datetimepicker.min.js"></script>
+<script src="js/main/prescription.js"></script>
+<script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.40/pdfmake.min.js'></script>
+<script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.40/vfs_fonts.js'></script>
+<script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js'></script>
+<script type="text/javascript" src="https://unpkg.com/vis-timeline@latest/standalone/umd/vis-timeline-graph2d.min.js"></script>
+<script src="js/pdf/payment.js"></script>
+<!--Local Stuff-->
+<!--Local Stuff-->
+<script>
+
+let staff_id = '<%- session._id %>'; 
+var pres_url = `./../module/prescription/handler`;
+let p_id = '<%- p_id %>';
+
+console.log(staff_id);
+jQuery(document).ready(function($) {
+
+
+
+// note that months are zero-based in the JavaScript Date object, so month 3 is April
+var items = new vis.DataSet([
+  { id: 1, content: "item 1", start: new Date(2013, 3, 20) },
+  { id: 2, content: "item 2", start: new Date(2013, 3, 14) },
+  { id: 3, content: "item 3", start: new Date(2013, 3, 18) },
+  {
+    id: 4,
+    content: "item 4",
+    start: new Date(2013, 3, 16),
+    end: new Date(2013, 3, 19),
+  },
+  { id: 5, content: "item 5", start: new Date(2013, 3, 25) },
+  { id: 6, content: "item 6", start: new Date(2013, 3, 27) },
+]);
+
+var min = new Date(2013, 3, 1); // 1 april
+var max = new Date(2013, 3, 30, 23, 59, 59); // 30 april
+
+var container = document.getElementById("visualization");
+var options = {
+  editable: true,
+
+  onAdd: function (item, callback) {
+    prettyPrompt(
+      "Add item",
+      "Enter text content for new item:",
+      item.content,
+      function (value) {
+        if (value) {
+          item.content = value;
+          callback(item); // send back adjusted new item
+        } else {
+          callback(null); // cancel item creation
+        }
+      }
+    );
+  },
+
+  onMove: function (item, callback) {
+    var title =
+      "Do you really want to move the item to\n" +
+      "start: " +
+      item.start +
+      "\n" +
+      "end: " +
+      item.end +
+      "?";
+
+    prettyConfirm("Move item", title, function (ok) {
+      if (ok) {
+        callback(item); // send back item as confirmation (can be changed)
+      } else {
+        callback(null); // cancel editing item
+      }
+    });
+  },
+
+  onMoving: function (item, callback) {
+    if (item.start < min) item.start = min;
+    if (item.start > max) item.start = max;
+    if (item.end > max) item.end = max;
+
+    callback(item); // send back the (possibly) changed item
+  },
+
+  onUpdate: function (item, callback) {
+    prettyPrompt(
+      "Update item",
+      "Edit items text:",
+      item.content,
+      function (value) {
+        if (value) {
+          item.content = value;
+          callback(item); // send back adjusted item
+        } else {
+          callback(null); // cancel updating the item
+        }
+      }
+    );
+  },
+
+  onRemove: function (item, callback) {
+    prettyConfirm(
+      "Remove item",
+      "Do you really want to remove item " + item.content + "?",
+      function (ok) {
+        if (ok) {
+          callback(item); // confirm deletion
+        } else {
+          callback(null); // cancel deletion
+        }
+      }
+    );
+  },
+};
+var timeline = new vis.Timeline(container, items, options);
+
+items.on("*", function (event, properties) {
+  logEvent(event, properties);
+});
+
+function logEvent(event, properties) {
+  var log = document.getElementById("log");
+  var msg = document.createElement("div");
+  msg.innerHTML =
+    "event=" +
+    JSON.stringify(event) +
+    ", " +
+    "properties=" +
+    JSON.stringify(properties);
+  log.firstChild ? log.insertBefore(msg, log.firstChild) : log.appendChild(msg);
+}
+
+function prettyConfirm(title, text, callback) {
+  swal(
+    {
+      title: title,
+      text: text,
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+    },
+    callback
+  );
+}
+
+function prettyPrompt(title, text, inputValue, callback) {
+  swal(
+    {
+      title: title,
+      text: text,
+      type: "input",
+      showCancelButton: true,
+      inputValue: inputValue,
+    },
+    callback
+  );
+}
+
+
+
+$('#add_payment').on( 'click', async function () {
+$('#PayModalview').modal('show');
+});
+
+$('._submit_pres_data').on( 'click', async function () {
+DataData.addItemToData($("input[name='medi_name']").val(), 21,2,0, 0, 0,1);
+$('#add_Prescription_form')[0].reset();
+displayData();
+});			
+
+
+$('#download_pdf').on( 'click', async function () {
+var doc_title = $("input[name='fname']").val()+'_Bill.pdf';
+pdf_download(doc_title);
+});
+
+
+$('#view_pdf').on( 'click', async function () {
+$('#canvas').html('');
+$('#DataModalview').modal('show');
+render();
+})
+
+
+$('#add_prescription').on( 'click', async function () {
+$('#Prescription_view').html('');
+$('#PrescriptionModalview').modal('show');
+//render_prescription();
+})
+
+$('#save_pres').on( 'click', async function () {
+$.post(pres_url, {
+swtch : "add_Prescription", 
+p_id : p_id,
+user_id : staff_id,
+pres:DataData.listData()
+}, function(data, status){
+iziToast.success({
+id: 'ERROR',
+title: data,
+position: 'topRight',
+transitionIn: 'bounceInRight'
+});
+});
+})
+
+//DataData.addItemToData("Medicine 1", 21,2,0, 0, 0,1);
+//DataData.addItemToData("Medicine 2", 23,3,0, 0, 0,1);
+displayData();
+
+
+});
+</script>
+
+<%- include("layout/footer2")-%>

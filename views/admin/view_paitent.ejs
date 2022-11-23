@@ -1,0 +1,885 @@
+<%- include("layout/header1")-%>
+<link
+  rel="stylesheet"
+  href="assets/css/lib/datatable/dataTables.bootstrap.min.css"
+/>
+<link rel="stylesheet" href="assets/css/lib/bootstrap-datetimepicker.css" />
+<%- include("layout/header2")-%> <%- include("layout/NavBar")-%>
+<!-- content-wrapper starts -->
+<!-- Content -->
+<div class="content" style="min-height: 78vh">
+  <input id="hospital_name" value="<%- HOSPITAL_NAME %>" hidden />
+  <input id="pa_id" value="<%- p_id %>" hidden />
+  <!-- Animated -->
+  <div class="animated fadeIn">
+    <!-- Orders -->
+    <div class="orders">
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="card">
+            <div class="card-body">
+              <div class="col-lg-12">
+                <!-- main form panel -->
+                <form
+                  id="data_form"
+                  action="#"
+                  method="post"
+                  enctype="multipart/form-data"
+                >
+                  <div class="row">
+                    <div class="col-lg-12">
+                      <div>
+                        <div class="card-body">
+                          <!-- Credit Card -->
+                          <div id="pay-invoice" class="col-md-12">
+                            <div class="card-body">
+                              <div class="card-title">
+                                <h3 class="text-center">View patient</h3>
+                              </div>
+                              <div class="col-md-12 row">
+                                <a
+                                  href="../<%- session.mainrole %>/patients"
+                                  class="btn btn-sm btn-outline-dark float-left ml-2"
+                                  >Main Menu</a
+                                >
+                                <button
+                                  id="download_pdf"
+                                  type="button"
+                                  class="btn btn-sm btn-outline-light text-success float-left ml-2"
+                                >
+                                  Payment PDF
+                                </button>
+                                <button
+                                  id="view_pdf"
+                                  type="button"
+                                  class="btn btn-sm btn-outline-light text-success float-left"
+                                >
+                                  View PDF
+                                </button>
+                                <button
+                                  id="add_payment"
+                                  type="button"
+                                  class="btn btn-sm btn-outline-light text-success float-left ml-2"
+                                >
+                                  Add Payment
+                                </button>
+                                <a
+                                  href="../<%- session.mainrole %>/addprescription<%- p_id %>"
+                                  class="btn btn-sm btn-outline-light text-success float-left ml-2"
+                                  >Add Prescription</a
+                                >
+                              </div>
+                              <hr />
+
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label class="control-label mb-1"
+                                      >Fist Name</label
+                                    >
+                                    <input
+                                      readonly
+                                      name="fname"
+                                      value="<%- data[0].fname %>"
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="First Name"
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label class="control-label mb-1"
+                                      >Last Name</label
+                                    >
+                                    <input
+                                      readonly
+                                      name="lname"
+                                      value="<%- data[0].lname %>"
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="Last Name"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label class="control-label mb-1"
+                                      >Dob</label
+                                    >
+                                    <input
+                                      readonly
+                                      name="dob"
+                                      value="<%- data[0].dob %>"
+                                      id="datetimepicker1"
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="DOB"
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label class="control-label mb-1"
+                                      >Age</label
+                                    >
+                                    <input
+                                      readonly
+                                      name="age"
+                                      value="<%- data[0].age %>"
+                                      readonly
+                                      type="number"
+                                      class="form-control"
+                                      placeholder="Age"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label class="control-label mb-1"
+                                      >Contact</label
+                                    >
+                                    <input
+                                      readonly
+                                      name="contact"
+                                      value="<%- data[0].contact %>"
+                                      type="number"
+                                      class="form-control"
+                                      placeholder="Contact"
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label class="control-label mb-1"
+                                      >Gender</label
+                                    >
+                                    <select
+                                      disabled
+                                      name="gender"
+                                      id="select"
+                                      class="form-control"
+                                    >
+                                      <option value="">
+                                        <%- data[0].gender %>
+                                      </option>
+                                      <option value="male">Male</option>
+                                      <option value="female">Female</option>
+                                      <option value="others">Others</option>
+                                    </select>
+                                  </div>
+                                </div>
+                              </div>
+                              <hr />
+
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label class="control-label mb-1"
+                                      >Address Line</label
+                                    >
+                                    <input
+                                      readonly
+                                      name="address"
+                                      value="<%- data[0].address %>"
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="Address Line"
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label class="control-label mb-1"
+                                      >City</label
+                                    >
+                                    <input
+                                      readonly
+                                      name="city"
+                                      value="<%- data[0].city %>"
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="City"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label class="control-label mb-1"
+                                      >Taluk</label
+                                    >
+                                    <input
+                                      readonly
+                                      name="taluk"
+                                      value="<%- data[0].taluk %>"
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="Taluk"
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label class="control-label mb-1"
+                                      >State</label
+                                    >
+                                    <input
+                                      readonly
+                                      name="state"
+                                      value="<%- data[0].state %>"
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="State"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label class="control-label mb-1"
+                                      >Country</label
+                                    >
+                                    <input
+                                      readonly
+                                      name="country"
+                                      value="<%- data[0].country %>"
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="Country"
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label class="control-label mb-1"
+                                      >Pincode</label
+                                    >
+                                    <input
+                                      readonly
+                                      name="pincode"
+                                      value="<%- data[0].pincode %>"
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="Pincode"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                              <hr />
+
+                              <div class="row">
+                                <div class="col-md-12">
+                                  <div class="form-group">
+                                    <label class="control-label mb-1"
+                                      >Adhar No</label
+                                    >
+                                    <input
+                                      readonly
+                                      name="adhar"
+                                      value="<%- data[0].adhar %>"
+                                      type="number"
+                                      class="form-control"
+                                      placeholder="Adhar No"
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label class="control-label mb-1"
+                                      >Email</label
+                                    >
+                                    <input
+                                      readonly
+                                      name="email"
+                                      value="<%- data[0].email %>"
+                                      type="mail"
+                                      class="form-control"
+                                      placeholder="Email"
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label class="control-label mb-1"
+                                      >Language</label
+                                    >
+                                    <input
+                                      readonly
+                                      name="language"
+                                      value="<%- data[0].language %>"
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="Language"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label class="control-label mb-1"
+                                      >Nationality</label
+                                    >
+                                    <input
+                                      readonly
+                                      name="nationality"
+                                      value="<%- data[0].nationality %>"
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="Nationality"
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label class="control-label mb-1"
+                                      >Address2</label
+                                    >
+                                    <input
+                                      readonly
+                                      name="address2"
+                                      value="<%- data[0].address2 %>"
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="address2"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+                              <hr />
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label class="control-label mb-1"
+                                      >Status</label
+                                    >
+                                    <input
+                                      readonly
+                                      name="status"
+                                      value="<%- data[0].status %>"
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="status"
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label class="control-label mb-1"
+                                      >Advance</label
+                                    >
+                                    <input
+                                      readonly
+                                      name="advance"
+                                      value="<%- data[0].advance %>"
+                                      type="number"
+                                      class="form-control"
+                                      placeholder="Advance"
+                                    />
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="row">
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label class="control-label mb-1"
+                                      >Emergency_contact_name</label
+                                    >
+                                    <input
+                                      readonly
+                                      name="emergency_contact_name"
+                                      value="<%- data[0].emergency_contact_name %>"
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="Emergency contact name"
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label class="control-label mb-1"
+                                      >Emergency contact number
+                                    </label>
+                                    <input
+                                      readonly
+                                      name="emergency_contact_number"
+                                      value="<%- data[0].emergency_contact_number %>"
+                                      type="number"
+                                      class="form-control"
+                                      placeholder="Emergency contact number"
+                                    />
+                                  </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                  <div class="form-group">
+                                    <label
+                                      class="switch switch-text switch-primary d-none"
+                                    >
+                                      <input
+                                        readonly
+                                        id="reference_switch"
+                                        type="checkbox"
+                                        class="switch-input"
+                                        checked="true"
+                                      />
+                                      <span
+                                        data-on="On"
+                                        data-off="Off"
+                                        class="switch-label"
+                                      ></span>
+                                      <span class="switch-handle"></span>
+                                    </label>
+
+                                    <label class="control-label mb-1"
+                                      >Reference</label
+                                    >
+                                    <input
+                                      readonly
+                                      id="reference"
+                                      name="reference"
+                                      value="<%- data[0].reference %>"
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="Reference Name"
+                                    />
+                                  </div>
+                                </div>
+                                <div class="col-md-12">
+                                  <div class="form-group">
+                                    <label class="control-label mb-1"
+                                      >Others details</label
+                                    >
+                                    <textarea
+                                      readonly
+                                      name="others_details"
+                                      value="<%- data[0].others_details %>"
+                                      type="text"
+                                      class="form-control"
+                                      placeholder="Others details"
+                                    >
+<%- data[0].others_details %></textarea
+                                    >
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="row">
+                                <div class="col-md-12 d-none">
+                                  <button
+                                    id="add-button"
+                                    type="button"
+                                    class="col-md-3 btn btn-lg btn-info btn-block float-right"
+                                  >
+                                    <i class="pe-7s-add-user"></i>&nbsp;
+                                    <span id="payment-button-amount">Add</span>
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-12 card">
+                              <div class="row">
+                                <div class="col-md-12" id="payment_view"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- .card -->
+                    </div>
+                    <!--/.col-->
+                  </div>
+                </form>
+              </div>
+              <!-- main form panel end -->
+            </div>
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- /.col-lg-12 -->
+      </div>
+    </div>
+    <!-- /.orders -->
+
+    <!-- /#add-category -->
+  </div>
+  <!-- .animated -->
+</div>
+
+<!-- View Model formsdata-->
+<div
+  class="modal fade"
+  id="DataModalview"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="DataModalview"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="width: 54rem">
+      <div class="modal-header">
+        <div id="canvas"></div>
+      </div>
+      <input hidden id="action" value="" />
+      <input hidden id="data_id" value="" />
+
+      <div id="payment_view"></div>
+    </div>
+  </div>
+</div>
+<!-- View Model end formsdata-->
+
+<!-- Payment View Model formsdata-->
+<!-- Modal bed formsdata-->
+<div
+  class="modal fade"
+  id="PayModalview"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="PayModalview"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Paymnet</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <form id="add_pay_form">
+        <div class="modal-body p-5">
+          <div class="form-group">
+            <label>payer Name</label>
+            <input type="text" class="form-control" name="payee" />
+          </div>
+          <div class="form-group">
+            <label>Amount</label>
+            <input type="number" class="form-control" name="amount" />
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-sm btn-outline-success _submit_pay_data"
+            data-dismiss="modal"
+          >
+            Submit
+          </button>
+          <button
+            type="button"
+            class="btn btn-sm btn-outline-secondary"
+            data-dismiss="modal"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- View Model end formsdata -->
+
+<!-- View Model prescription-->
+<div
+  class="modal fade"
+  id="PrescriptionModalview"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="DataModalview"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Prescription</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id="add_pay_form">
+        <div class="modal-body p-5">
+          <div class="form-group">
+            <label>Medicine Name</label>
+            <input type="text" class="form-control" name="payee" />
+          </div>
+          <div class="form-group">
+            <label>Count</label>
+            <input type="number" class="form-control" name="amount" />
+          </div>
+        </div>
+
+        <div id="Prescription_view" class="modal-body p-5"></div>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-sm btn-outline-success _submit_pay_data"
+            data-dismiss="modal"
+          >
+            Submit
+          </button>
+          <button
+            type="button"
+            class="btn btn-sm btn-outline-secondary"
+            data-dismiss="modal"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- View Model end prescription-->
+
+<!-- /.content -->
+<!-- content-wrapper ends -->
+<%- include("layout/footer1")-%>
+<script src="js/_common/moment.min.js"></script>
+<script src="js/_common/bootstrap-datetimepicker.min.js"></script>
+<script
+  type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.40/pdfmake.min.js"
+></script>
+<script
+  type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.40/vfs_fonts.js"
+></script>
+<script
+  type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"
+></script>
+<script
+  type="text/javascript"
+  src="https://cdn.jsdelivr.net/npm/pdfjs-dist@2.0.385/build/pdf.min.js"
+></script>
+<script src="js/pdf/payment.js"></script>
+<!--Local Stuff-->
+<!--Local Stuff-->
+<script>
+  var data_url = `./../module/patient/adddata`;
+  let staff_id = "<%- session._id %>";
+  var bill_url = `./../module/bill/handler`;
+  var pay_url = `./../module/payment/handler`;
+  let p_id = "<%- p_id %>";
+
+  console.log(staff_id);
+  jQuery(document).ready(function ($) {
+    $.fn.serializeObject = function () {
+      var o = {};
+      var a = this.serializeArray();
+      let obj = { name: "staff_id", value: staff_id };
+      a.push(obj);
+      $.each(a, function () {
+        if (o[this.name]) {
+          if (!o[this.name].push) {
+            o[this.name] = [o[this.name]];
+          }
+          o[this.name].push(this.value || "");
+        } else {
+          o[this.name] = this.value || "";
+        }
+      });
+      return o;
+    };
+
+    $("#reference_switch").on("click", function () {
+      if ($(this).prop("checked")) {
+        $("#reference").show();
+      } else {
+        $("#reference").hide();
+      }
+    });
+
+    $("#add-button").on("click", function () {
+      var data = $("#data_form").serializeObject();
+      $.post(
+        data_url,
+        { data: data, swtch: "add_data" },
+        function (data, status) {
+          $("#data_form")[0].reset();
+          iziToast.info({
+            id: "ERROR",
+            title: data,
+            position: "topRight",
+            transitionIn: "bounceInRight",
+          });
+        }
+      );
+    });
+
+    // date pipcker
+    $("#datetimepicker1").datetimepicker({
+      viewMode: "years",
+      format: "YYYY-MM-DD",
+      ignoreReadonly: true,
+    });
+
+    $(function () {
+      $("#datetimepicker9").datetimepicker({
+        viewMode: "years",
+        format: "YYYY-MM-DD",
+      });
+    });
+
+    $("#datetimepicker1").on("dp.change", function (e) {
+      jQuery("input[name='age']").val(
+        moment().diff(moment(e.date.format(e.date._f), "YYYY-MM-DD"), "years")
+      );
+    });
+
+    let pay_data = {};
+    bill_details = () => {
+      $.post(
+        bill_url,
+        {
+          swtch: "get_total_data",
+          p_id: p_id,
+        },
+        function (data, status) {
+          let bill_total = 0;
+          let pay_total = 0;
+          if (data.Bill_data.length > 0) {
+            Bill_data = data.Bill_data;
+            let html = "<table class = 'table table-hover table-striped' >";
+            html +=
+              "<thead><th class = 'bg-secondary text-light'>Bills</th><th class = 'bg-secondary text-light' >Amount</th></thead>";
+            data.Bill_data.map((e) => {
+              bill_total += e.amount;
+              html +=
+                '<tr ><td><strong class = "badge" >' +
+                e.name +
+                "</strong></td>";
+              html += '<td class = "text-success ml-1" >' + e.amount + "</td>";
+              html += "</tr>";
+            });
+
+            html +=
+              '<tr class = "bg-secondary text-light" ><td><strong>Payment</strong></td>';
+            html += "<td><strong >Amount</strong></td>";
+            html += "</tr>";
+
+            data.Pay_data.map((e) => {
+              pay_total += e.amount;
+              html += '<tr class = "border" ><td>' + e.payee + "</td>";
+              html += '<td class = "text-success ml-1" >' + e.amount + "</td>";
+              html += "</tr>";
+            });
+            html +=
+              '<tr class = "bg-secondary text-light" ><td><strong>BILL TOTAL</strong></td>';
+            html += "<td><strong >" + bill_total + "</strong></td>";
+            html += "</tr>";
+            html +=
+              '<tr class = "bg-secondary text-light" ><td><strong>Payment TOTAL</strong></td>';
+            html += "<td><strong >" + pay_total + "</strong></td>";
+            html += "</tr>";
+            if (bill_total - pay_total > 0) {
+              html +=
+                '<tr class = "bg-danger text-light" ><td><strong>Remaining total</strong></td>';
+            } else {
+              html +=
+                '<tr class = "bg-success text-light" ><td><strong>Extra Amount</strong></td>';
+            }
+            html +=
+              "<td><strong >" +
+              Math.abs(bill_total - pay_total) +
+              "</strong></td>";
+            html += "</tr>";
+
+            html += "</table>";
+            $("#payment_view").html(html);
+          } else {
+            $("#payment_view").html(
+              "<div class = 'col-md-12 badge p-3 text-center' >Not Paid</div>"
+            );
+          }
+        }
+      );
+    };
+    bill_details();
+
+    $("#add_payment").on("click", async function () {
+      $("#PayModalview").modal("show");
+    });
+
+    $("._submit_pay_data").on("click", async function () {
+      $.post(
+        pay_url,
+        {
+          swtch: "add_payment",
+          payee: $("input[name='payee']").val(),
+          p_id: p_id,
+          user_id: staff_id,
+          amount: $("input[name='amount']").val(),
+        },
+        function (data, status) {
+          $("#add_pay_form")[0].reset();
+          iziToast.success({
+            id: "ERROR",
+            title: data,
+            position: "topRight",
+            transitionIn: "bounceInRight",
+          });
+          $("#PayModalview").modal("hide");
+          bill_details();
+        }
+      );
+    });
+
+    $("#download_pdf").on("click", async function () {
+      var doc_title = $("input[name='fname']").val() + "_Bill.pdf";
+      pdf_download(doc_title);
+    });
+
+    $("#view_pdf").on("click", async function () {
+      $("#canvas").html("");
+      $("#DataModalview").modal("show");
+      render();
+    });
+
+    $("#add_prescription").on("click", async function () {
+      $("#Prescription_view").html("");
+      $("#PrescriptionModalview").modal("show");
+      render_prescription();
+    });
+
+    let pres_data = [];
+    let data = { name: "", doss: 200, time: "", count: "" };
+    pres_data.push(data);
+    render_prescription = () => {
+      let html = "";
+      for (let i = 0; i < pres_data.length; i++) {
+        html +=
+          '<div class="form-group"><label>payer Name</label><input type = "text" class="form-control" name = "payee" /></div>';
+      }
+      $("#Prescription_view").html(html);
+    };
+  });
+</script>
+
+<%- include("layout/footer2")-%>

@@ -1,0 +1,225 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+body {
+  /* background-color: #23262b; */
+  /* background: rgba(191, 236, 247, 0.308); */
+  background-image: url("bg3.png"),linear-gradient(rgba(173, 232, 244, 0.2), rgba(173, 232, 244, 0.2));
+  background-color: #cccccc;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  background-size: cover;
+  background-blend-mode: multiply;
+  /* box-shadow: inset 0 0 0 2000px rgba(255, 0, 150, 0.3); */
+}
+body::-webkit-scrollbar {
+  width: 5px;
+}
+body::-webkit-scrollbar-track {
+  background: #161616;
+  box-shadow: inset 0.05em 0 0 #838383;
+}
+
+
+
+body::-webkit-scrollbar-thumb {
+  border-radius: 0.5em;
+  box-shadow: inset 0.15em 0.1em 0.1em rgba(255, 255, 255, 0.5),
+    inset -0.15em -0.1em 0.1em rgba(0, 0, 0, 0.3);
+  background-image: linear-gradient(to right, #141e30, #243b55);
+}
+.content,
+.forget-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 999;
+  /* width: 370px;
+  padding: 55px 32px; */
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+    rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+    rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  border-radius: 5%;
+  background: linear-gradient(45deg, #4cc9f0, transparent);
+  backdrop-filter: blur(3px);
+  /* -webkit-backdrop-filter: blur(12px); */
+
+  opacity: 0;
+  transition: 0.5s;
+  pointer-events: none;
+}
+.content.show,
+.forget-content.show {
+  width: 370px;
+  padding: 55px 32px;
+  opacity: 1;
+  pointer-events: all;
+}
+
+.content header,
+.forget-content header {
+  color: whitesmoke;
+  font-size: 33px;
+  font-weight: 600;
+  margin: 0 0 35px 0;
+}
+
+.field {
+  position: relative;
+  height: 45px;
+  width: 100%;
+  display: flex;
+  /* background: rgba(255, 255, 255, 0.04); */
+}
+
+.field input {
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: 20px;
+  border: none;
+  outline: none;
+  color: whitesmoke;
+  padding: 0 15px;
+  font-size: 20px;
+}
+.field input:not([type="submit"]):hover {
+  border: 2px gray solid;
+}
+.space {
+  margin-top: 16px;
+}
+.pass,
+.f-pass {
+  text-align: center;
+  margin: 5px 12px;
+}
+.pass a,
+.f-pass a {
+  color: whitesmoke;
+  text-decoration: none;
+}
+.pass:hover a,
+.f-pass:hover a {
+  text-decoration: underline;
+}
+.show-btn {
+  float: right;
+  color: whitesmoke;
+  font-size: 15px;
+  margin: 10px 10px;
+  font-weight: 600;
+  opacity: 0;
+  cursor: pointer;
+}
+.show-res {
+  text-align: center;
+  color: rgb(240, 10, 10);
+  font-size: 15px;
+  margin: 10px 0px;
+  font-weight: 600;
+}
+.show-res2 {
+  text-align: center;
+  color: rgb(10, 240, 10);
+  font-size: 15px;
+  margin: 10px 0px;
+  font-weight: 600;
+}
+/* .show input {
+  padding: 0%;
+} */
+input[type="submit"] {
+  background: #5086ad;
+  border: 1px solid #2691d9;
+  color: whitesmoke;
+  font-size: 18px;
+  letter-spacing: 1px;
+  font-weight: 600;
+  cursor: pointer;
+}
+input[type="submit"]:hover {
+  background: #0f8cdf;
+}
+
+footer {
+  width: 100%;
+  position: absolute;
+  top: 100vh;
+  background-color: #23262b;
+  /* background-color: #353535; */
+  padding: 25px 0;
+  text-align: center;
+  color: #868686;
+}
+footer a {
+  padding: 6px;
+  font-size: 14px;
+  text-decoration: none;
+  color: #c3c3c3;
+}
+footer a:hover {
+  color: whitesmoke;
+}
+.spinner {
+  width: 50px;
+  height: 50px;
+  margin: 0 auto;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: dashed rgb(3, 135, 175);
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+  animation: spin 2s infinite;
+}
+.inner-spinner {
+  width: 25px;
+  height: 25px;
+
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  border: dotted grey;
+  animation: inner-spin 1s infinite;
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(-180deg);
+  }
+  100% {
+    transform: rotate(-360deg);
+  }
+}
+@keyframes inner-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(180deg) scale(1.2);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .content,
+  .forget-content,
+  .content.show,
+  .forget-content.show {
+    width: fit-content;
+  }
+  footer {
+    padding: 30px 0 10px 0;
+  }
+}

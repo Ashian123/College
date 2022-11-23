@@ -1,0 +1,181 @@
+		<%- include("layout/header1")-%>
+		<link rel="stylesheet" href="assets/css/lib/datatable/dataTables.bootstrap.min.css">		
+		<%- include("layout/header2")-%>
+        <%- include("layout/NavBar")-%>
+          <!-- content-wrapper starts -->
+        <!-- Content -->
+        <div class="content" style = "min-height:78vh" >
+            <!-- Animated -->
+            <div class="animated fadeIn">
+                <!-- Orders -->
+                <div class="orders">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="box-title">Payment </h4>								
+                                </div>
+                                <div class="card-body">
+								<div class = "col-md-5 float-right text-center" id="pagination"></div>
+                                    <div class="col-md-12 table-stats order-table ov-h">
+										<div class="wrapper">    
+										<table class="table table-hover" id="dataTable" >
+                                            <thead>
+                                                <tr>
+                                                    <th class="serial">Payee</th>
+													<th class="serial">Amount</th>
+                                                    <th>Date</th>
+													<th>Action</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+										</div>
+                                    </div> <!-- /.table-stats -->
+                                </div>
+                            </div> <!-- /.card -->
+                        </div>  <!-- /.col-lg-12 -->
+					</div>
+                </div>
+                <!-- /.orders -->
+
+
+            <!-- /#add-category -->
+            </div>
+            <!-- .animated -->
+        </div>
+        <!-- /.content -->			
+		<!-- Modal formsdata-->
+<div class="modal fade" id="DataModal" tabindex="-1" role="dialog" aria-labelledby="DataModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">DATA ADD </h5>
+		<input hidden id = "selected_node" value = "" >
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+      </div>
+<input hidden id = "action" value = "" />
+<input hidden id = "data_id" value = "" />	  
+<form id = "data_form" >
+  <div class="modal-body p-5">
+  <div class="form-group">
+    <label for="exampleInputEmail1">Payment type Name</label>
+    <input type="text" class="form-control" name = "t_formsdata_name" placeholder="Name">
+  </div>  
+  </div>
+  
+      <div class="modal-footer">
+		<button type="button" class="btn btn-sm btn-outline-success _submit_data" data-dismiss="modal">Submit</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+      </div>
+</form>  	  
+    </div>
+  </div>
+</div>	
+          <!-- content-wrapper ends -->
+	<%- include("layout/footer1")-%>
+	<script src="/admin-staff/js/devs/bundle.base.js"></script>
+    <script src="assets/js/lib/data-table/datatables.min.js"></script>
+    <script src="assets/js/lib/data-table/dataTables.bootstrap.min.js"></script>		
+<script>
+jQuery(document).ready(function($) { 
+			let ssr = `./../module/payment/ssr`;
+			let data_url = `./../module/payment/handler`;			
+			
+			var index = $('#dataTable').find('th:last').index();
+			var table = $('#dataTable').DataTable({
+			"processing": true,
+			"serverSide": true,
+			"lengthMenu": [ [5, 10, 20, 25, 50, -1], [5, 10, 20, 25, 50, "All"] ],
+			"order": [[ (index-1), "desc" ]],
+			ajax: {
+			url: ssr,
+			type: 'POST'
+			},
+			columns: [
+			{ data: 'payee'},
+			{ data: 'amount'},
+			{ data: 'createdAt'},
+			{ data: '_id'}
+			],
+				columnDefs: [
+				{
+				render: function (data, type, row) {
+				pay_btn = "<button data-id = '"+data+"' class = 'btn btn-sm btn-outline-danger delete_data' title = 'delete payment type' ><i class='mdi menu-icon mdi-delete'></i></button>";
+				return pay_btn;
+				},
+				targets: index,
+				}
+				]			
+			}); // datatable ending...
+
+
+$('#add_formsdata').on( 'click', function () { 
+//$('#data_form')[0].reset();		
+$('.modal-title').html('ADD DATA');
+$('#action').val('addData');
+$('#DataModal').modal('show');
+//data_modal.show();
+});
+
+$('#data_details').on( 'click','.data_edit', function () { 
+$("input[name='t_formsdata_title']").val($(this).data('title'));
+$("textarea[name='t_formsdata_description']").val($(this).data('description'));
+$('.modal-title').html('EDIT DATA');
+$('#DataModal').modal('show');
+$('#data_id').val($(this).data('id'));
+$('#action').val('updateData');
+});	
+
+
+$('#dataTable').on( 'click','.delete_data', function () {	
+$('#data_id').val($(this).data('id'));
+$('#action').val('change_status'); 
+    iziToast.show({
+        backgroundColor: 'rgb(239, 35, 60, 60%)',
+        progressBar: true,
+        // color: 'dark',
+        theme: 'dark', // 
+        progressBarColor: 'rgb(239, 35, 60)',
+        overlay: true,
+        displayMode: 1,
+        pauseOnHover: false,
+        timeout: false,
+        message: 'Are you sure ? ',
+        position: 'center',
+        buttons: [
+            ['<button class = "btn btn-danger">Delete</button>', function (instance, toast) {
+			$('._submit_data').click();
+			instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+            }, true]
+        ]
+    });
+});
+
+
+
+$('._submit_data,.confirm_delete').on( 'click', function () {
+$.post(data_url, { 
+name : $("input[name='t_formsdata_name']").val(), 
+swtch : $("#action").val(), 
+uid : $("#data_id").val()  
+}, function(data, status){  
+iziToast.success({
+id: 'ERROR',
+title: data,
+position: 'topRight',
+transitionIn: 'bounceInRight'
+});
+$('#dataTable').DataTable().draw();
+
+$('#data_form')[0].reset();
+$('#DataModal,#DeleteModal').modal('hide');
+
+});	
+});
+
+})	
+</script>
+		
+<%- include("layout/footer2")-%>

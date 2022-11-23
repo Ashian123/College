@@ -1,0 +1,519 @@
+<%- include("layout/header1")-%>
+<link
+  rel="stylesheet"
+  href="assets/css/lib/datatable/dataTables.bootstrap.min.css"
+/>
+<%- include("layout/header2")-%> <%- include("layout/NavBar")-%>
+<!-- content-wrapper starts -->
+<!-- Content -->
+<div class="content" style="min-height: 78vh">
+  <!-- Animated -->
+  <div class="animated fadeIn">
+    <!-- Orders -->
+    <div class="orders">
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="box-title">Medicines</h4>
+              <button
+                class="btn btn-sm btn-outline-dark float-right"
+                id="add_formsdata"
+              >
+                Add
+              </button>
+            </div>
+            <div class="card-body">
+              <div
+                class="col-md-5 float-right text-center"
+                id="pagination"
+              ></div>
+              <div class="col-md-12 table-stats order-table ov-h">
+                <div class="wrapper">
+                  <table class="table table-hover" id="dataTable">
+                    <thead>
+                      <tr>
+                        <th class="serial">Name</th>
+                        <th class="serial">Amount</th>
+                        <th>Created Date</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                  </table>
+                </div>
+              </div>
+              <!-- /.table-stats -->
+            </div>
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- /.col-lg-12 -->
+      </div>
+    </div>
+    <!-- /.orders -->
+
+    <!-- /#add-category -->
+  </div>
+  <!-- .animated -->
+</div>
+<!-- /.content -->
+
+<!-- Modal formsdata-->
+<div
+  class="modal fade"
+  id="DataModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="DataModal"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">DATA ADD</h5>
+        <input hidden id="selected_node" value="" />
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <input hidden id="action" value="" />
+      <input hidden id="data_id" value="" />
+
+      <form id="data_form">
+        <div class="modal-body p-5">
+          <div class="form-group">
+            <label for="exampleInputEmail1">Medicine Name</label>
+            <input
+              type="text"
+              class="form-control"
+              name="t_formsdata_name"
+              placeholder="Name"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Medicine Amount</label>
+            <input
+              type="number"
+              class="form-control"
+              name="t_formsdata_amount"
+              placeholder="amount"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Medicine St</label>
+            <input
+              type="number"
+              class="form-control"
+              name="t_formsdata_strength"
+              placeholder="strength"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Supplier_Id</label>
+            <select class="form-control" id="pay_data"></select>
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Batch_no</label>
+            <input
+              type="number"
+              class="form-control"
+              name="t_formsdata_batch_no"
+              placeholder="batch_no"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Form</label>
+            <input
+              type="text"
+              class="form-control"
+              name="t_formsdata_form"
+              placeholder="form"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Box_size</label>
+            <input
+              type="number"
+              class="form-control"
+              name="t_formsdata_box_size"
+              placeholder="box_size"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Trade_prize</label>
+            <input
+              type="number"
+              class="form-control"
+              name="t_formsdata_trade_prize"
+              placeholder="trade_prize"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">MRP</label>
+            <input
+              type="number"
+              class="form-control"
+              name="t_formsdata_mrp"
+              placeholder="mrp"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Box_prize</label>
+            <input
+              type="number"
+              class="form-control"
+              name="t_formsdata_box_prize"
+              placeholder="box_prize"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Product_details</label>
+            <input
+              type="text"
+              class="form-control"
+              name="t_formsdata_product_details"
+              placeholder="product_details"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Side_effect</label>
+            <input
+              type="text"
+              class="form-control"
+              name="t_formsdata_side_effect"
+              placeholder="side_effect"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Expire_date</label>
+            <input
+              type="number"
+              class="form-control"
+              name="t_formsdata_expire_date"
+              placeholder="expire_date"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Instock</label>
+            <input
+              type="text"
+              class="form-control"
+              name="t_formsdata_instock"
+              placeholder="instock"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">W_Discount</label>
+            <input
+              type="text"
+              class="form-control"
+              name="t_formsdata_w_discount"
+              placeholder="w_discount"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Product_image</label>
+            <input
+              type="text"
+              class="form-control"
+              name="t_formsdata_product_image"
+              placeholder="product_image"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Short_stock</label>
+            <input
+              type="text"
+              class="form-control"
+              name="t_formsdata_short_stock"
+              placeholder="short_stock"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Favourite</label>
+            <input
+              type="text"
+              class="form-control"
+              name="t_formsdata_favourite"
+              placeholder="favourite"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">DATE</label>
+            <input
+              type="date"
+              class="form-control"
+              name="t_formsdata_date"
+              placeholder="date"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Discount</label>
+            <input
+              type="number"
+              class="form-control"
+              name="t_formsdata_discount"
+              placeholder="discount"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Sale_Qty</label>
+            <input
+              type="number"
+              class="form-control"
+              name="t_formsdata_sale_qty"
+              placeholder="sale_qty"
+            />
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-sm btn-outline-success _submit_data"
+            data-dismiss="modal"
+          >
+            Submit
+          </button>
+          <button
+            type="button"
+            class="btn btn-sm btn-secondary"
+            data-dismiss="modal"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- content-wrapper ends -->
+<%- include("layout/footer1")-%>
+<script src="/admin-staff/js/devs/bundle.base.js"></script>
+<script src="assets/js/lib/data-table/datatables.min.js"></script>
+<script src="assets/js/lib/data-table/dataTables.bootstrap.min.js"></script>
+<!--Local Stuff-->
+<script>
+  jQuery(document).ready(function ($) {
+    let ssr = `./../module/medicine/ssr`;
+    let data_url = `./../module/medicine/handler`;
+    let supplier_url = `./../module/supplier/handler`;
+    let supplier = `./../module/supplier/getdata`;
+    var index = $("#dataTable").find("th:last").index();
+    var table = $("#dataTable").DataTable({
+      processing: true,
+      serverSide: true,
+      lengthMenu: [
+        [5, 10, 20, 25, 50, -1],
+        [5, 10, 20, 25, 50, "All"],
+      ],
+      order: [[index - 1, "desc"]],
+      ajax: {
+        url: ssr,
+        type: "POST",
+      },
+      columns: [
+        { data: "name" },
+        { data: "amount" },
+        { data: "createdAt" },
+        { data: "_id" },
+      ],
+      columnDefs: [
+        {
+          render: function (data, type, row) {
+            pay_btn =
+              "<button data-id = '" +
+              data +
+              "' class = 'btn btn-sm btn-outline-danger delete_data' title = 'delete payment type' ><i class='mdi menu-icon mdi-delete'></i></button>";
+
+            pay_btn +=
+              "<button data-id = '" +
+              data +
+              "' class = 'btn btn-sm btn-outline-info edit_data ml-1' title = 'edit payment type' ><i class='mdi menu-icon mdi-delete'></i></button>";
+
+            return pay_btn;
+          },
+          targets: index,
+        },
+      ],
+    }); // datatable ending...
+
+    $("#dataTable").on("click", ".pay_data", function () {
+      $("input[name='p_id']").val($(this).data("id"));
+      $("#action").val("addData");
+      $("#DataModal").modal("show");
+    });
+
+    $("#pay_data").html("");
+    $.get(supplier, function (data, status) {
+      data.map((e) => {
+        var pay_data = document.getElementById("pay_data");
+        var option = document.createElement("option");
+        option.text = e.s_name;
+        option.value = e._id;
+        pay_data.add(option);
+      });
+    });
+
+    $("#add_formsdata").on("click", function () {
+      //$('#data_form')[0].reset();
+      $("#action").val("addData");
+      $(".modal-title").html("ADD DATA");
+      $("#action").val("addData");
+      $("#DataModal").modal("show");
+      //data_modal.show();
+    });
+
+    $("#data_details").on("click", ".data_edit", function () {
+      $("input[name='t_formsdata_title']").val($(this).data("title"));
+      $("textarea[name='t_formsdata_description']").val(
+        $(this).data("description")
+      );
+      $(".modal-title").html("EDIT DATA");
+      $("#DataModal").modal("show");
+      $("#data_id").val($(this).data("id"));
+      $("#action").val("updateData");
+    });
+
+    $.post(
+      supplier_url,
+      {
+        swtch: $("#action").val(),
+        data_id: $("#data_id").val(),
+        p_id: $("input[name='p_id']").val(),
+      },
+      function (data, status) {
+        table.ajax.reload(null, false);
+        $("#data_form")[0].reset();
+        iziToast.success({
+          id: "ERROR",
+          title: data,
+          position: "topRight",
+          transitionIn: "bounceInRight",
+        });
+      }
+    );
+
+    $("#dataTable").on("click", ".delete_data", function () {
+      $("#data_id").val($(this).data("id"));
+      $("#action").val("change_status");
+      iziToast.show({
+        backgroundColor: "rgb(239, 35, 60, 60%)",
+        progressBar: true,
+        // color: 'dark',
+        theme: "dark", //
+        progressBarColor: "rgb(239, 35, 60)",
+        overlay: true,
+        displayMode: 1,
+        pauseOnHover: false,
+        timeout: false,
+        message: "Are you sure ? ",
+        position: "center",
+        buttons: [
+          [
+            '<button class = "btn btn-danger">Delete</button>',
+            function (instance, toast) {
+              $("._submit_data").click();
+              instance.hide({ transitionOut: "fadeOut" }, toast, "button");
+            },
+            true,
+          ],
+        ],
+      });
+    });
+    $("#dataTable").on("click", ".edit_data", function () {
+      $("#data_form")[0].reset();
+      $("#action").val("updateData");
+      $(".modal-title").html("EDIT DATA");
+      let m_id = $(this).data("id");
+      console.log(m_id);
+      $("#data_id").val(m_id);
+      $.post(
+        data_url,
+        {
+          swtch: "get_medi_data",
+          m_id: m_id,
+        },
+        function (data, status) {
+          $("input[name='t_formsdata_name']").val(data.name);
+          $("input[name='t_formsdata_amount']").val(data.amount);
+          $("input[name='t_formsdata_strength']").val(data.strength),
+            $("#pay_data").val(data.supplier_id),
+            $("input[name='t_formsdata_batch_no']").val(data.batch_no),
+            $("input[name='t_formsdata_form']").val(data.form),
+            $("input[name='t_formsdata_box_size']").val(data.box_size),
+            $("input[name='t_formsdata_trade_prize']").val(data.trade_prize),
+            $("input[name='t_formsdata_mrp']").val(data.mrp),
+            $("input[name='t_formsdata_box_prize']").val(data.box_prize),
+            $("input[name='t_formsdata_product_details']").val(
+              data.product_details
+            ),
+            $("input[name='t_formsdata_side_effect']").val(data.side_effect),
+            $("input[name='t_formsdata_expire_date']").val(data.expire_date),
+            $("input[name='t_formsdata_instock']").val(data.instock),
+            $("input[name='t_formsdata_w_discount']").val(data.w_discount),
+            $("input[name='t_formsdata_product_image']").val(
+              data.product_image
+            ),
+            $("input[name='t_formsdata_short_stock']").val(data.short_stock),
+            $("input[name='t_formsdata_favourite']").val(data.favourite),
+            $("input[name='t_formsdata_date']").val(data.date),
+            $("input[name='t_formsdata_discount']").val(data.discount),
+            $("input[name='t_formsdata_sale_qty']").val(data.sale_qty),
+            $("#DataModal").modal("show");
+        }
+      );
+    });
+
+    $("._submit_data,.confirm_delete").on("click", function () {
+      console.log($("input[name='t_formsdata_name']").val());
+      $.post(
+        data_url,
+        {
+          name: $("input[name='t_formsdata_name']").val(),
+          amount: $("input[name='t_formsdata_amount']").val(),
+          strength: $("input[name='t_formsdata_strength']").val(),
+          supplier_id: $("#pay_data").val(),
+          batch_no: $("input[name='t_formsdata_batch_no']").val(),
+          form: $("input[name='t_formsdata_form']").val(),
+          box_size: $("input[name='t_formsdata_box_size']").val(),
+          trade_prize: $("input[name='t_formsdata_trade_prize']").val(),
+          mrp: $("input[name='t_formsdata_mrp']").val(),
+          box_prize: $("input[name='t_formsdata_box_prize']").val(),
+          product_details: $("input[name='t_formsdata_product_details']").val(),
+          side_effect: $("input[name='t_formsdata_side_effect']").val(),
+          expire_date: $("input[name='t_formsdata_expire_date']").val(),
+          instock: $("input[name='t_formsdata_instock']").val(),
+          w_discount: $("input[name='t_formsdata_w_discount']").val(),
+          product_image: $("input[name='t_formsdata_product_image']").val(),
+          short_stock: $("input[name='t_formsdata_short_stock']").val(),
+          favourite: $("input[name='t_formsdata_favourite']").val(),
+          date: $("input[name='t_formsdata_date']").val(),
+          discount: $("input[name='t_formsdata_discount']").val(),
+          sale_qty: $("input[name='t_formsdata_sale_qty']").val(),
+          swtch: $("#action").val(),
+          uid: $("#data_id").val(),
+        },
+        function (data, status) {
+          iziToast.success({
+            id: "ERROR",
+            title: data,
+            position: "topRight",
+            transitionIn: "bounceInRight",
+          });
+          $("#dataTable").DataTable().draw();
+          $("#data_form")[0].reset();
+          $("#DataModal,#DeleteModal").modal("hide");
+        }
+      );
+    });
+  });
+</script>
+
+<%- include("layout/footer2")-%>

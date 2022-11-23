@@ -1,0 +1,78 @@
+<nav class="sidebar sidebar-offcanvas" id="sidebar">
+  <ul class="nav">
+    <li class="nav-item">
+      <a class="nav-link" href="/<%- session.mainrole %>/index">
+        <i class="mdi mdi-view-dashboard menu-icon text-warning"></i>
+        <span class="menu-title"><%- session.user_name %></span>
+        <div class="badge badge-danger">Home</div>
+      </a>
+    </li>
+	<!--
+    <li class="nav-item">
+      <a class="nav-link" href="/admin/college_details">
+        <i class="mdi mdi-hospital-building menu-icon"></i>
+        <span class="menu-title">Institute Details</span>
+      </a>
+    </li>
+	-->
+    <li class="nav-item">
+      <a
+        class="nav-link"
+        data-toggle="collapse"
+        href="#ui-basic"
+        aria-expanded="false"
+        aria-controls="ui-basic"
+      >
+        <i class="mdi mdi-account-key menu-icon text-light"></i>
+        <span class="menu-title">Paitents</span>
+        <i class="menu-arrow"></i>
+      </a>
+      <div class="collapse" id="ui-basic">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item">
+            <a class="nav-link" href="/<%- session.mainrole %>/patients"
+              >View</a
+            >
+          </li>
+          <li class="nav-item" >
+            <a class="nav-link" href="/<%- session.mainrole %>/addpatient">Add</a>
+          </li>
+        
+		</ul>
+      </div>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="/<%- session.mainrole %>/payment">
+        <i class="mdi mdi-cash-usd menu-icon text-success"></i>
+        <span class="menu-title">Payment</span>
+      </a>
+    </li>	
+    <li class="nav-item">
+      <a class="nav-link" href="/<%- session.mainrole %>/bill_type">
+        <i class="mdi mdi-cash-multiple menu-icon text-info"></i>
+        <span class="menu-title">Bill Type</span>
+      </a>
+    </li>	
+	
+    <li class="nav-item">
+      <a class="nav-link" href="/<%- session.mainrole %>/rooms">
+        <i class="mdi mdi-seat-flat-angled menu-icon text-danger"></i>
+        <span class="menu-title">Rooms</span>
+      </a>
+    </li>	
+    <li class="nav-item">
+      <a class="nav-link" href="/<%- session.mainrole %>/users">
+        <i class="mdi mdi-account menu-icon text-info"></i>
+        <span class="menu-title">Users</span>
+      </a>
+    </li>	
+    <li class="nav-item">
+      <a class="nav-link" href="/<%- session.mainrole %>/medicine">
+        <i class="mdi mdi-account menu-icon text-info"></i>
+        <span class="menu-title">Medicine</span>
+      </a>
+    </li>		
+  
+  </ul>
+</nav>
+<div class="main-panel">

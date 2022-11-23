@@ -1,0 +1,92 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title><%- APP_NAME %></title>
+    <meta name="description" content="<%- APP_NAME %> - HTML5 Admin Template">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" href="https://i.imgur.com/QRAUqs9.png">
+    <link rel="shortcut icon" href="https://i.imgur.com/QRAUqs9.png">
+
+    <link rel="stylesheet" href="css/_common/normalize.min.css">
+    <link rel="stylesheet" href="css/_common/bootstrap.min.css">
+    <link rel="stylesheet" href="css/_common/font-awesome.min.css">
+    <link rel="stylesheet" href="css/_common/themify-icons.css">
+    <link rel="stylesheet" href="css/_common/pe-icon-7-stroke.min.css">
+    <link rel="stylesheet" href="css/_common/flag-icon.min.css">
+    <link rel="stylesheet" href="assets/css/cs-skin-elastic.css">
+	<link rel="stylesheet" href="css/_common/iziToast.min.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800' rel='stylesheet' type='text/css'>
+
+    <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/html5shiv/3.7.3/html5shiv.min.js"></script> -->
+</head>
+<body class="bg-dark">
+
+    <div class="sufee-login d-flex align-content-center flex-wrap">
+        <div class="container">
+            <div class="login-content">
+                <div class="login-logo">
+                    <a href="index.html">
+                        <img class="align-content" src="images/logo.png" alt="">
+                    </a>
+                </div>
+                <div class="login-form">
+                    <form id = "login_form" method = "post" action = "/login" >
+                        <div class="form-group">
+                            <label>USER ID</label>
+                            <input for = "user_id" name = "user_id" type="text" class="form-control" placeholder="USER ID">
+                        </div>
+                        <div class="form-group">
+                            <label>PASSWORD</label>
+                            <input for = "password" name = "password" type="password" class="form-control" placeholder="PASSWORD">
+                        </div>
+
+                        <button id = "sign_in" type="button" class="btn btn-success btn-flat m-b-30 m-t-30">Sign in</button>
+
+                        <div class="register-link m-t-15 mt-2 text-center">
+                            <p>Don't have account ? <a class = "btn btn-outline-dark" href="/register"> Sign Up Here</a></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/_common/jquery.min.js"></script>
+    <script src="js/_common/popper.min.js"></script>
+    <script src="js/_common/bootstrap.min.js"></script>
+    <script src="js/_common/jquery.matchHeight.min.js"></script>
+	<script src="js/_common/iziToast.min.js"></script>
+    <script src="assets/js/main.js"></script>
+<script> 
+jQuery(document).ready(function($) { 
+
+$('#sign_in').on( 'click', function () {
+$.post(`/login`, { user_id : $("input[name='user_id']").val(), password : $("input[name='password']").val()  }, function(data, status){
+$('#login_form')[0].reset();
+if(data=="Done"){ 
+console.log("redirect");
+location.reload();
+}
+    iziToast.error({
+        id: 'ERROR',
+        title: data,
+        position: 'topRight',
+        transitionIn: 'bounceInRight'
+    });
+});	
+});
+
+
+});	
+</script>
+
+</body>
+</html>

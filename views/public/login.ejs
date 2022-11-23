@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/_common/login.css" />
+	<link rel="stylesheet" href="css/_common/iziToast.min.css">
+    <title>Login</title>
+  </head>
+  <body>
+    <div class="bg">
+      <div class="content">
+        <header>LOGIN</header>
+        <form id = "login_form" method = "post" action = "/login" >
+          <div class="field">
+            <span></span>
+            <input
+              type="text"
+              placeholder="User-ID"
+              name="user_id"
+              required
+              autocomplete="off"
+            />
+          </div>
+          <div class="field space">
+            <span></span>
+            <input
+              type="password"
+              class="password"
+              placeholder="Password"
+              required
+              name="password"
+              autocomplete="off"
+            />
+          </div>
+          <div class="show-btn">
+            <span class="">Show</span>
+          </div>
+          <div class="field">
+            <input id = "sign_in" type="submit" value="LOGIN" />
+          </div>
+
+          <div class="pass" style="margin-top: 9px">
+           <!-- <a href="#">Forgot password?</a> -->
+          </div>
+          <div class="show-res"></div>
+        </form>
+      </div>
+
+      <div class="forget-content">
+        <header>Forget Password</header>
+        <form action="" autocomplete="off">
+          <div class="field">
+            <span></span>
+            <input
+              type="text"
+              placeholder="User-ID or Email-ID"
+              name="userid"
+              required
+            />
+          </div>
+
+          <div class="field space">
+            <input type="submit" id="get_psd" value="Get Password" />
+          </div>
+
+          <div class="f-pass" style="margin-top: 9px">
+            <a href="#"> Back to Login</a>
+          </div>
+          <div class="show-res2"></div>
+        </form>
+      </div>
+    </div>
+  </body>
+  <footer>
+    <div class="container">
+      <strong
+        >Copyright &copy; 2021
+        <a href="https://www.ashiantechnologies.com" target="_blank"
+          >Ashian Technologies</a
+        >.</strong
+      >
+      <p>All rights reserved.</p>
+    </div>
+  </footer>
+  <script src="js/_common/jquery.min.js"></script>
+  <script src="js/_common/iziToast.min.js"></script>
+  <script type="text/javascript" src="js/_common/login.js"></script>
+<script> 
+jQuery(document).ready(function($) { 
+
+$('#sign_in').on( 'click', function (e) { 
+e.preventDefault();
+$('.show-res').html('<div class="spinner"><div class="inner-spinner"></div></div>');
+$.post(`/login`, { user_id : $("input[name='user_id']").val(), password : $("input[name='password']").val()  }, function(data, status){ 
+$('#login_form')[0].reset();
+if(data=="Done"){ 
+location.reload();
+}
+$('.show-res').html('');
+    iziToast.error({
+        id: 'ERROR',
+        title: data,
+        position: 'topRight',
+        transitionIn: 'bounceInRight'
+    });
+});	
+});
+
+
+});	
+</script>  
+  
+  
+</html>

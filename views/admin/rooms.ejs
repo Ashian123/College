@@ -1,0 +1,245 @@
+		<%- include("layout/header1")-%>
+		<link rel="stylesheet" href="assets/css/lib/datatable/dataTables.bootstrap.min.css">		
+		<%- include("layout/header2")-%>
+        <%- include("layout/NavBar")-%>
+          <!-- content-wrapper starts -->
+        <!-- Content -->
+        <div class="content" style = "min-height:78vh" >
+            <!-- Animated -->
+            <div class="animated fadeIn">
+                <!-- Orders -->
+                <div class="orders">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="card">
+                                <div class="p-3">
+                                    <h4 class="box-title">Rooms</h4>
+									<button class="btn btn-sm btn-outline-dark float-right"  id = "add_formsdata" >Add</button>
+									
+                                </div>
+                                <div class="mb-2">
+								<div class = "col-md-5 float-right text-center" id="pagination"></div>
+                                    <div class="col-md-12 table-stats order-table ov-h">
+										<div class="wrapper">    
+										<table class="table table-hover" id="dataTable" >
+                                            <thead>
+                                                <tr>
+                                                    <th class="serial">Name</th>
+													<th class="serial">Bed Counts</th>
+													<th class="serial">Amount</th>
+                                                    <th>Created Date</th>
+													<th>Action</th>
+                                                </tr>
+                                            </thead>
+                                        </table>
+										</div>
+                                    </div> <!-- /.table-stats -->
+                                </div>
+                            </div> <!-- /.card -->
+                        </div>  <!-- /.col-lg-12 -->
+					</div>
+                </div>
+                <!-- /.orders -->
+
+
+            <!-- /#add-category -->
+            </div>
+            <!-- .animated -->
+        </div>
+        <!-- /.content -->		
+		
+<!-- Modal formsdata-->
+<div class="modal fade" id="DataModal" tabindex="-1" role="dialog" aria-labelledby="DataModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">DATA ADD </h5>
+		<input hidden id = "selected_node" value = "" >
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+      </div>
+<input hidden id = "action" value = "" />
+<input hidden id = "data_id" value = "" />	  
+<form id = "data_form" >
+  <div class="modal-body p-5">
+  <div class="form-group">
+    <label for="exampleInputEmail1">Room Name</label>
+    <input type="text" required class="form-control" name = "t_formsdata_name" placeholder="Name">
+  </div> 
+  <div class="form-group">
+    <label for="exampleInputEmail1">Charge per day</label>
+    <input type="number" required class="form-control" name = "t_amount" placeholder="Amount">
+  </div>  
+  <div class="form-group">
+    <label for="exampleInputEmail1">Beds Count</label>
+    <input type="number" required class="form-control" name = "bed_count" placeholder="bed count">
+  </div>  
+  </div>
+  
+      <div class="modal-footer">
+		<button type="button" class="btn btn-sm btn-outline-success _submit_data" data-dismiss="modal">Submit</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+      </div>
+</form>  	  
+    </div>
+  </div>
+</div>	
+<!-- Modal formsdata ends -->
+
+<!-- View Model formsdata-->
+<div class="modal fade" id="DataBedModal" tabindex="-1" role="dialog" aria-labelledby="DataBedModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">VIEW BEDS </h5>
+		<input hidden id = "selected_node" value = "" >
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+      </div>
+<input hidden id = "action" value = "" />
+<input hidden id = "data_id" value = "" />
+
+
+<div id = "bed_view"></div>
+ 	  
+    </div>
+  </div>
+</div>			
+<!-- View Model end formsdata-->	
+	
+	<%- include("layout/footer1")-%>
+	<script src="/admin-staff/js/devs/bundle.base.js"></script>
+    <script src="assets/js/lib/data-table/datatables.min.js"></script>
+    <script src="assets/js/lib/data-table/dataTables.bootstrap.min.js"></script>		
+    <!--Local Stuff-->
+<script>
+jQuery(document).ready(function($) { 
+			let ssr = `./../module/rooms/ssr`;
+			let data_url = `./../module/rooms/handler`;
+			let beds_url = `./../module/beds/handler`;			
+			
+			var table = $('#dataTable').DataTable({
+			"processing": true,
+			"serverSide": true,
+			"lengthMenu": [ [5, 10, 20, 25, 50, -1], [5, 10, 20, 25, 50, "All"] ],
+			"order": [[ 3, "desc" ]],
+			ajax: {
+			url: ssr,
+			type: 'POST'
+			},
+			columns: [
+			{ data: 'name'},
+			{ data: 'bed_count'},
+			{ data: 'amount'},
+			{ data: 'createdAt'},
+			{ data: '_id'}
+			],
+				columnDefs: [
+				{
+				render: function (data, type, row) {
+				pay_btn = "<button data-id = '"+data+"' class = 'btn btn-sm btn-outline-success mr-2 _view_bed' title = 'View Beds' ><i class='mdi mdi-eye menu-icon'></i></button>";
+				pay_btn += "<button data-id = '"+data+"' class = 'btn btn-sm btn-outline-danger delete_data' title = 'delete payment type' ><i class='mdi menu-icon mdi-delete'></i></button>";
+				return pay_btn;
+				},
+				targets: 4,
+				}
+				]			
+			}); // datatable ending...
+
+$('#add_formsdata').on( 'click', function () { 
+//$('#data_form')[0].reset();		
+$('.modal-title').html('ADD DATA');
+$('#action').val('addData');
+$('#DataModal').modal('show');
+//data_modal.show();
+});
+
+$('#data_details').on( 'click','.data_edit', function () { 
+$("input[name='t_formsdata_title']").val($(this).data('title'));
+$("textarea[name='t_formsdata_description']").val($(this).data('description'));
+$('.modal-title').html('EDIT DATA');
+$('#DataModal').modal('show');
+$('#data_id').val($(this).data('id'));
+$('#action').val('updateData');
+});	
+
+
+$('#dataTable').on( 'click','.delete_data', function () {	
+$('#data_id').val($(this).data('id'));
+$('#action').val('change_status'); 
+    iziToast.show({
+        backgroundColor: 'rgb(239, 35, 60, 60%)',
+        progressBar: true,
+        // color: 'dark',
+        theme: 'dark', // 
+        progressBarColor: 'rgb(239, 35, 60)',
+        overlay: true,
+        displayMode: 1,
+        pauseOnHover: false,
+        timeout: false,
+        message: 'Are you sure ? ',
+        position: 'center',
+        buttons: [
+            ['<button class = "btn btn-danger">Delete</button>', function (instance, toast) {
+			$('._submit_data').click();
+			instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+            }, true]
+        ]
+    });
+});
+
+
+
+$('._submit_data').on( 'click', function () {
+$.post(data_url, { 
+name : $("input[name='t_formsdata_name']").val(), 
+amount : $("input[name='t_amount']").val(), 
+bed_count : $("input[name='bed_count']").val(), 
+swtch : $("#action").val(), 
+uid : $("#data_id").val()  
+}, function(data, status){  
+iziToast.success({
+id: 'ERROR',
+title: data,
+position: 'topRight',
+transitionIn: 'bounceInRight'
+});
+$('#dataTable').DataTable().draw();
+
+$('#data_form')[0].reset();
+$('#DataModal,#DeleteModal').modal('hide');
+
+});	
+});
+
+
+$('#dataTable').on( 'click','._view_bed', function () { 
+$("#bed_view").html("<div class = 'badge' >loading</div>");
+$.post(beds_url, { 
+swtch : "view_bed_data", 
+r_id : $(this).data('id')
+}, function(data, status){ 
+if(data.length>0){
+let html = "<table class = 'table table-hover' >";
+	html += "<thead><th>Bed Name</th><th>Room Name</th><th>Availability</th></thead>";
+      data.map((e) => {
+		html += '<tr><td><strong class = "badge" >'+e.name+'</strong></td>';
+		html += '<td class = "text-success ml-1" >'+e.bed_id+'</td>';
+		html += e.p_id?'<td class = "text-info ml-1" ><a href = "viewpatient'+e.p_id+'" class = "btn btn-sm btn-outline-success pay_view" title = "view patient details" >view</a></td>':'<td class = "text-success ml-1" >Free</td>';
+		html += '</tr>';
+      });
+html += "</table>";	  
+$("#bed_view").html(html);
+} else { $("#bed_view").html("<div class = 'col-md-12 badge p-3 text-center' >Not Paid</div>") }
+$('#DataBedModal').modal('show');
+
+});
+});
+
+
+})	
+</script>
+
+<%- include("layout/footer2")-%>
