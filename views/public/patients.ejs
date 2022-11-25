@@ -1,0 +1,373 @@
+		<%- include("layout/header1")-%>
+	<link rel="stylesheet" href="assets/css/lib/datatable/dataTables.bootstrap.min.css">		
+		<%- include("layout/header2")-%>
+        <%- include("layout/NavBar")-%>
+        <!-- content-wrapper starts -->
+        <div class="content" style = "min-height:78vh" >
+            <!-- Animated -->
+            <div class="animated fadeIn">
+                <!-- Orders -->
+                <div class="orders">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="box-title">Patient Details</h4>
+									
+									<a href = "../<%- session.mainrole %>/addpatient" title="Add Patient" class="btn btn-outline-success float-right"><i class="mdi mdi-account-multiple-plus menu-icon mr-2"></i></a>
+                                </div>
+                                <div class="card-body">
+								<div class = "col-md-5 float-right text-center" id="pagination"></div>
+                                    <div class="col-md-12 table-stats order-table ov-h">
+										<div class="wrapper">    
+										<table class="table table-hover table-striped" id="dataTable" >
+                                            <thead>
+                                                <tr>
+                                                    <th class="serial">Name</th>
+                                                    <th>Age</th>
+                                                    <th>Contact</th>
+                                                    <th>Gender</th>
+                                                    <th>Bill</th>
+													<th>Reference</th>
+													<th>Admit On</th>
+													<th>Beds</th>
+                                                </tr>
+                                            </thead>
+                                        
+										</table>
+										</div>
+                                    </div> <!-- /.table-stats -->
+                                </div>
+                            </div> <!-- /.card -->
+                        </div>  <!-- /.col-lg-12 -->
+					</div>
+                </div>
+            </div>
+            
+        </div>		  
+	<!-- content-wrapper ends -->		  
+	
+	
+	
+	
+<!-- Modal formsdata-->
+<div class="modal fade" id="DataModal" tabindex="-1" role="dialog" aria-labelledby="DataModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">DATA ADD </h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+      </div>
+<input hidden id = "action" value = "" />
+<input hidden id = "data_id" value = "" />
+  
+<form id = "data_form" >
+<input hidden name = "p_id" value = "" />	
+  <div class="modal-body p-5">
+  <div class="form-group">
+    <label>Bill type Name </label>
+    <select class="form-control" id = "pay_data" ></select>
+  </div> 
+  <div class="form-group">
+    <label for="Aamount">Amount</label>
+    <input type="number" <% if (!permisson.edit_payment) { %> readonly <% } %> class="form-control" name = "d_amount" placeholder="Amount">
+  </div>  
+  </div>
+  
+      <div class="modal-footer">
+		<button type="button" class="btn btn-sm btn-outline-success _submit_data" data-dismiss="modal">Submit</button>
+        <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">Cancel</button>
+      </div>
+</form>  	  
+    </div>
+  </div>
+</div>		
+		
+<!-- View Model formsdata-->
+<div class="modal fade" id="DataModalview" tabindex="-1" role="dialog" aria-labelledby="DataModalview" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">VIEW BILLS </h5>
+		<input hidden id = "selected_node" value = "" >
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+      </div>
+<input hidden id = "action" value = "" />
+<input hidden id = "data_id" value = "" />
+
+
+<div id = "payment_view"></div>
+ 	  
+    </div>
+  </div>
+</div>			
+<!-- View Model end formsdata-->		
+		
+<!-- Modal bed formsdata-->
+<div class="modal fade" id="DataModalBed" tabindex="-1" role="dialog" aria-labelledby="DataModalBed" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Allocate Bed</h5>
+		<input hidden id = "selected_node" value = "" >
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+      </div>
+	  
+<form id = "data_bed_form" >
+  <div class="modal-body p-5">
+  <div class="form-group">
+    <label>Available Beds</label>
+    <select class="form-control" id = "avl_beds" ></select>
+  </div> 
+  <div class="form-group">
+    <label>Health Issue</label>
+    <input class="form-control" name = "health_issue" />
+  </div>   
+  </div>
+  
+      <div class="modal-footer">
+		<button type="button" class="btn btn-sm btn-outline-success _submit_bed_data" data-dismiss="modal">Submit</button>
+        <button type="button" class="btn btn-sm btn-outline-secondary" data-dismiss="modal">Cancel</button>
+      </div>
+</form>  	  
+    </div>
+  </div>
+</div>	
+		
+		
+	
+	
+	
+	<%- include("layout/footer1")-%>
+    <script src="/admin-staff/js/devs/bundle.base.js"></script>
+	<script src="/admin-staff/js/devs/template.js"></script>
+    <script src="/admin-staff/js/devs/dashboard.js"></script>
+	<!-- Custom js for this page-->
+    
+    <script src="assets/js/lib/data-table/datatables.min.js"></script>
+    <script src="assets/js/lib/data-table/dataTables.bootstrap.min.js"></script>
+		
+    	
+<script>
+jQuery(document).ready(function($) {
+			let ssr = `./../module/patient/ssr`;
+			let bill_url = `./../module/bill/handler`;
+			let bill_type = `./../module/bill_type/getdata`;
+			let beds = `./../module/beds/getdata`;
+			let beds_url = `./../module/beds/handler`;
+	
+			let staff_id = '<%- session._id %>';
+			var index = $('#dataTable').find('th:last').index();
+			var table = $('#dataTable').DataTable({
+			"processing": true,
+			"serverSide": true,
+			"responsive": true,
+			"lengthMenu": [ [5, 10, 20, 25, 50, -1], [5, 10, 20, 25, 50, "All"] ],
+			//"order": [[ 7, "desc" ]],
+			"order": [[(index-1),'desc']],
+			ajax: {
+			url: ssr,
+			type: 'POST'
+			},
+			columns: [
+			{ data: 'fname'},
+			{ data: 'age'},
+			{ data: 'contact'},
+			{ data: 'gender'},		
+			{ data: '_id'},
+			{ data: 'reference'},
+			{ data: 'createdAt'},
+			{ data: 'admit' }
+			],
+				columnDefs: [
+				{
+				render: function (data, type, row) {
+				return "<a href = 'viewpatient"+row._id+"' class = 'btn btn-sm btn-outline-success pay_view' title = 'view patient details' >"+(row.fname)+" "+(row.lname)+"</a>";
+				},
+				targets: 0,
+				},				
+				{
+				render: function (data, type, row) {
+				pay_btn = "<button data-id = '"+data+"' class = 'btn btn-sm rounded-circle btn-outline-success mr-2 pay_add' title = 'add payment' ><i class='mdi mdi-cart-plus menu-icon'></i></button>";
+				pay_btn += "<button data-id = '"+data+"' class = 'btn btn-sm rounded-circle btn-outline-info pay_view' title = 'view payment' ><i class='mdi mdi-eye menu-icon'></i></button>";
+				return pay_btn;
+				},
+				targets: 4,
+				},
+				{
+				render: function (data,type, row) {
+				//pay_btn = "<button data-id = '"+data+"' class = 'btn btn-sm btn-outline-success pay_add' title = 'view full patient details' ><i class='menu-icon pe-7s-settings'></i></button>";
+				if(row.admit==0){
+				pay_btn =  "<button data-id = '"+row._id+"' class = 'btn btn-sm rounded-circle btn-outline-success allocate_bed' title = 'Allocate Beds' ><i class='mdi mdi-seat-individual-suite menu-icon'></i></button>";
+				} else{
+				pay_btn = "<button data-id = '"+row._id+"' class = 'btn btn-sm rounded-circle btn-outline-info discharge_bed' title = 'Discharge bed' ><i class='mdi mdi-seat-recline-extra menu-icon text-dark'></i></button>";
+				}
+				return pay_btn;
+				},
+				targets: 7,
+				}			
+				]
+			
+			}); // datatable ending...
+
+
+$('#dataTable').on( 'click','.pay_add', function () { 
+$('.modal-title').html('ADD BILLS');
+$("input[name='p_id']").val($(this).data('id'));
+$("#action").val("addData")
+$('#DataModal').modal('show');
+});		
+
+
+$.get(bill_type, function(data, status){  
+	$('#pay_data').html("");
+      data.map((e) => {
+				var option = $('<option/>');
+				option.attr({ 'value': e.name, 'data-amount': e.amount,  }).text(e.name);
+				$('#pay_data').append(option);
+      });
+});
+
+$('#pay_data').on( 'change', function () {
+		var element = $(this).find('option:selected'); 
+        var myTag = element.attr("data-amount");
+		$("input[name='d_amount']").val(element.attr("data-amount"));
+});
+
+bed_update = () => {
+$('#avl_beds').html("");
+$.get(beds, function(data, status){  
+      data.map((e) => {
+	  var avl_beds = document.getElementById("avl_beds");
+        var option = document.createElement("option");
+        option.text = e.name;
+        option.value = e._id;
+        avl_beds.add(option);
+      })
+})
+}
+bed_update()
+
+$('#dataTable').on( 'click','.pay_view', function () { 
+$('.modal-title').html('VIEW BILLS');
+$("#payment_view").html("<div class = 'badge' >loading</div>");
+$.post(bill_url, { 
+swtch : "get_pat_data", 
+p_id : $(this).data('id')
+}, function(data, status){ 
+let total = 0;
+if(data.length>0){
+pay_data = data;
+let html = "<table class = 'table table-hover table-striped ' >";
+	html += "<thead><th>Payment</th><th>Amount</th></thead>";
+      data.map((e) => {
+	  total += e.amount;
+		html += '<tr><td><strong class = "badge" >'+e.name+'</strong></td>';
+		html += '<td class = "text-success ml-1" >'+e.amount+'</td>';
+		html += '</tr>';
+      });
+		html += '<tr class = "bg-info text-light" ><td><strong>TOTAL</strong></td>';
+		html += '<td><strong >'+total+'</strong></td>';
+		html += '</tr>';	  
+	  
+html += "</table>";	  
+$("#payment_view").html(html);
+} else { $("#payment_view").html("<div class = 'col-md-12 badge p-3 text-center' >Not Paid</div>") }
+$('#DataModalview').modal('show');
+});
+});	
+
+
+
+$('._submit_data').on( 'click', function () {
+$.post(bill_url, { 
+swtch : $("#action").val(), 
+data_id : $("#data_id").val(),
+name : $("#pay_data").val(), 
+p_id : $("input[name='p_id']").val(),
+user_id : staff_id,
+amount : $("input[name='d_amount']").val(),
+payed:true  
+}, function(data, status){
+$('#data_form')[0].reset();
+
+iziToast.success({
+id: 'ERROR',
+title: data,
+position: 'topRight',
+transitionIn: 'bounceInRight'
+});
+
+});	
+});
+
+
+// Bed allocation
+$('#dataTable').on( 'click','.allocate_bed', function () { 
+$('.modal-title').html('Allocate Beds');
+$("input[name='p_id']").val($(this).data('id'));
+$("#action").val("change_status_bed_update")
+$('#DataModalBed').modal('show');
+});
+
+
+$('._submit_bed_data').on( 'click', function () {
+$.post(beds_url, { 
+swtch : $("#action").val(), 
+data_id : $("#data_id").val(),
+avl_beds : $("#avl_beds").val(),
+p_id : $("input[name='p_id']").val(),
+user_id : staff_id,
+amount : $("input[name='d_amount']").val(),
+payed:true  
+}, function(data, status){
+table.ajax.reload(null, false);
+$('#data_form')[0].reset();
+bed_update()
+iziToast.success({
+id: 'ERROR',
+title: data,
+position: 'topRight',
+transitionIn: 'bounceInRight'
+});
+
+});	
+});
+
+
+$('#dataTable').on( 'click','.discharge_bed', function () {	
+$('#data_id').val($(this).data('id'));
+$('#action').val('dis_charge_bed'); 
+$("input[name='p_id']").val($(this).data('id'));
+    iziToast.show({
+        backgroundColor: 'rgb(0, 204, 0)',
+        progressBar: true,
+        //color: 'dark',
+        theme: 'dark', // 
+        progressBarColor: 'rgb(102, 255, 153)',
+        overlay: true,
+        displayMode: 1,
+        pauseOnHover: false,
+        timeout: false,
+        message: '<div class = "text-dark" >Are you sure ? </div>',
+        position: 'center',
+        buttons: [
+            ['<button class = "text-dark">Confirm</button>', function (instance, toast) {
+			$('._submit_bed_data').click();
+			instance.hide({ transitionOut: 'fadeOut' }, toast, 'button');
+            }, true]
+        ]
+    });
+});
+
+})	
+</script>	
+	
+    <!-- End custom js for this page-->
+<%- include("layout/footer2")-%>

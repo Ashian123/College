@@ -1,19 +1,23 @@
 // Based on  https://codepen.io/diguifi/pen/YdBbyz
 var canvasElement = document.getElementById("canvas");
 var pay_url = `./../module/payment/handler`;
+var bill_url = `./../module/bill/handler`;
 
 let fname = $("input[name='fname']").val();
 let hospital_name = $("#hospital_name").val();
 let pa_id = $("#pa_id").val();
 let today_date = moment().format("MMM Do YY");
 
-let pay_data = {};
+let bill_data = {}; let pay_total = 0;
 payment_details = () => {
-$.post(pay_url, { 
-swtch : "get_pat_data", 
+$.post(bill_url, { 
+swtch : "get_total_data", 
 p_id : pa_id
 }, function(data, status){ 
-pay_data = data;
+bill_data = data.Bill_data;
+      data.Pay_data.map((e) => {
+	  pay_total += e.amount;
+	  });
 });
 } 
 payment_details();
@@ -52,52 +56,56 @@ write_table = () => {
 var json_table = [];
 
 
-				var f_color = '#7F7C82';
-				var ft_color = '#256D85';
+				var f_color = 'black';
+				//var ft_color = '#256D85';
+				var ft_color = f_color;
+				var text_g = "green"; var text_r = "red";
 				var th = 'tableHeader';
 				var pdf_data = [];
 				var th = 'tableHeader';
 				let header_details = [{text: 'S.no', style: th, fontSize: fsz, alignment: 'center', bold: true, color:f_color }, 
-				{text: 'Name', style: th, fontSize: fsz, alignment: 'center', bold: true, color:f_color}, 
-				{text: 'amount', style: th, fontSize: fsz, alignment: 'center', bold: true, color:f_color
+				{text: 'Description', style: th, fontSize: fsz, alignment: 'left', bold: true, color:f_color}, 
+				{text: 'amount', style: th, fontSize: fsz, alignment: 'right', bold: true, color:f_color
 				}];
 				pdf_data[0] = header_details;
-		let total = 0; let addvance = 600;
-		for (i=0; i < pay_data.length; i++) {
-		total += pay_data[i].amount;
+		let total = 0; 
+		for (i=0; i < bill_data.length; i++) {
+		total += bill_data[i].amount;
 		pdf_data[i+1] =  [
 		{ text: i+1 ,  border: [true, true, true, true], fontSize: fsz, alignment: 'center', color:f_color },
-		{ text: pay_data[i].name ,  border: [true, true, true, true], fontSize: fsz, alignment: 'center', color:f_color },
-		{ text: pay_data[i].amount ,  border: [true, true, true, true], fontSize: fsz, alignment: 'center', color:f_color },
+		{ text: bill_data[i].name ,  border: [true, true, true, true], fontSize: fsz, alignment: 'left', color:f_color },
+		{ text: bill_data[i].amount ,  border: [true, true, true, true], fontSize: fsz, alignment: 'right', color:f_color },
 		]
 		}
 		
-		// Empty Space
-		pdf_data[i+1] =  [
+		let empty_space = [
 		{ text: "" ,  border: [false, false, false, false], fontSize: fsz, alignment: 'center', color:f_color },
 		{ text: "" ,  border: [false, false, false, false], fontSize: fsz, alignment: 'center', color:f_color },
 		{ text: "" , border: [false, false, false, false], fontSize: fsz, alignment: 'center', color:f_color },
-		]
+		];
+		
+		// Empty Space
+		pdf_data[i+1] =  empty_space;
 		
 		// Sub Total
 		pdf_data[i+2] =  [
-		{ text: "" ,  bold:true , border: [true, true, true, true], fontSize: fsz, alignment: 'center', color:ft_color },
-		{ text: "Sub Total" , bold:true ,border: [true, true, true, true], fontSize: fsz, alignment: 'center', color:ft_color },
-		{ text: total , bold:true ,border: [true, true, true, true], fontSize: fsz, alignment: 'center', color:ft_color },
-		]
-		
+		{ text: "" ,  bold:true , border: [false, false, false, false], fontSize: fsz, alignment: 'center', color:ft_color },
+		{ text: "Sub Total" , bold:true ,border: [false, false, false, true], fontSize: fsz, alignment: 'left', color:ft_color },
+		{ text: total , bold:true ,border: [false, false, false, true], fontSize: fsz, alignment: 'right', color:ft_color },
+		];
+		pdf_data[i+1] =  empty_space;
 		// Addvance Ammount
 		pdf_data[i+3] =  [
-		{ text: "" ,  bold:true ,border: [true, true, true, true], fontSize: fsz, alignment: 'center', color:ft_color },
-		{ text: "Advance" , bold:true ,border: [true, true, true, true], fontSize: fsz, alignment: 'center', color:ft_color },
-		{ text: addvance , bold:true ,border: [true, true, true, true], fontSize: fsz, alignment: 'center', color:ft_color },
-		]
+		{ text: "" ,  bold:true ,border: [false, false, false, false], fontSize: fsz, alignment: 'center', color:ft_color },
+		{ text: "Paid Amount" , bold:true ,border: [false, false, false, false], fontSize: fsz, alignment: 'left', color:ft_color },
+		{ text: pay_total , bold:true ,border: [false, false, false, false], fontSize: fsz, alignment: 'right', color:ft_color },
+		];pdf_data[i+1] =  empty_space;
 		
 		// Final Total Ammount
 		pdf_data[i+4] =  [
-		{ text: "" ,  bold:true ,border: [true, true, true, true], fontSize: fsz, alignment: 'center', color:ft_color },
-		{ text: "TOTAL" ,  bold:true ,border: [true, true, true, true], fontSize: fsz, alignment: 'center', color:ft_color },
-		{ text: total-addvance , bold:true ,border: [true, true, true, true], fontSize: fsz, alignment: 'center', color:ft_color },
+		{ text: "" ,  bold:true ,border: [false, false, false, true], fontSize: fsz, fillColor:"lightgray",alignment: 'center', color:ft_color },
+		{ text: total-pay_total?"Balance Due":"Extra Amount" ,  bold:true ,border: [false, false, false, true], fontSize: fsz, fillColor:"lightgray",alignment: 'left', color:ft_color },
+		{ text: total-pay_total , bold:true ,border: [false, false, false, true], fontSize: fsz, fillColor:"lightgray",alignment: 'right', color:total-pay_total?text_r:text_g },
 		]		
 		
         json_table.push({
@@ -159,7 +167,7 @@ return dd = {
 	                
 	            [
 	                {
-	                    text: 'BILL', 
+	                    text: 'INVOICE', 
 	                    style: 'invoiceTitle',
 	                    width: '*'
 	                },
@@ -168,7 +176,7 @@ return dd = {
     	                   {
     	                       columns: [
     	                            {
-    	                                text:'Bill #', 
+    	                                text:'Invoice #', 
     	                                style:'invoiceSubTitle',
     	                                width: '*'
     	                                
@@ -207,12 +215,12 @@ return dd = {
 	        columns: [
 	            {
 	                text: hospital_name,
-	                style:'invoiceBillingTitle',
+	                style:'invoiceBillingAddressTitle',
 	                
 	            },
 	            {
 	                text: 'Paitent Details',
-	                style:'invoiceBillingTitle',
+	                style:'invoiceBillingAddressTitle',
 	                
 	            },
 	        ]
@@ -221,12 +229,12 @@ return dd = {
 	    {
 	        columns: [
 	            {
-	                text: 'Your Name \n Your Company Inc.',
+	                text: $("#staff_name").val(),
 	                style: 'invoiceBillingDetails'
 	            },
 	            {
-	                text: fname,
-	                style: $("input[name='lname']").val()
+	                text:  $("input[name='fname']").val()+" "+$("input[name='lname']").val(),
+	                style: "invoiceBillingAddress"
 	            },
 	        ]
 	    },
@@ -251,7 +259,7 @@ return dd = {
 	                style: 'invoiceBillingAddress'
 	            },
 	            {
-	                text: '1111 Other street 25 \n New-York City NY 00000 \n   USA',
+	                text: $("input[name='city']").val()+" \n "+$("input[name='state']").val()+" - "+$("input[name='pincode']").val(),
 	                style: 'invoiceBillingAddress'
 	            },
 	        ]
@@ -275,12 +283,12 @@ return dd = {
 	                        style:'signaturePlaceholder'
 	                    },
 	                    { 
-	                        text: 'Your Name',
+	                        text: $("#staff_name").val(),
 	                        style:'signatureName'
 	                        
 	                    },
 	                    { 
-	                        text: 'Your job title',
+	                        text: $("#staff_role").val(),
 	                        style:'signatureJobTitle'
 	                        
 	                    }
@@ -289,6 +297,7 @@ return dd = {
 	            },
 	        ]
 	    },
+		/*
         { 
             text: 'NOTES',
             style:'notesTitle'
@@ -297,6 +306,7 @@ return dd = {
             text: 'Some notes goes here \n Notes second line',
             style:'notesText'
         }
+		*/
 	],
 	
 	styles: {
@@ -341,16 +351,19 @@ return dd = {
 		},
 		// Invoice Details
 		invoiceSubTitle: {
-			fontSize: fsz+2,
+			//fontSize: fsz+2,
+			fontSize: fsz,
 			alignment:'right'
 		},
 		invoiceSubValue: {
-			fontSize: fsz+2,
+			//fontSize: fsz+2,
+			fontSize: fsz,
 			alignment:'right'
 		},
 		// Billing Headers
 		invoiceBillingTitle: {
-			fontSize: fsz+4,
+			//fontSize: fsz+4,
+			fontSize: fsz,
 			bold: true,
 			alignment:'left',
 			margin:[0,20,0,5],
@@ -378,7 +391,8 @@ return dd = {
 		},
 		itemSubTitle: {
             italics: true,
-            fontSize: fsz+1
+            //fontSize: fsz+1
+			fontSize: fsz
 		},
 		itemNumber: {
 		    margin: [0,5,0,5],

@@ -1,0 +1,436 @@
+<%- include("layout/header1")-%>
+<link
+  rel="stylesheet"
+  href="assets/css/lib/datatable/dataTables.bootstrap.min.css"
+/>
+<link rel="stylesheet" href="assets/css/lib/bootstrap-datetimepicker.css" />
+<%- include("layout/header2")-%> <%- include("layout/NavBar")-%>
+<!-- content-wrapper starts -->
+<div class="col-lg-12">
+  <!-- main form panel -->
+  <form id="data_form" action="#" method="post" enctype="multipart/form-data">
+    <div class="row">
+      <div class="col-lg-12">
+        <div>
+          <div class="card-body">
+            <!-- Credit Card -->
+            <div id="pay-invoice">
+              <a
+                href="../<%- session.mainrole %>/patients"
+                class="btn btn-sm btn-outline-dark float-right"
+                >Back</a
+              >
+              <div class="card-body">
+                <div class="card-title">
+                  <h3 class="text-center">Add patient</h3>
+                </div>
+                <hr />
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="control-label mb-1">Fist Name</label>
+                      <input
+                        name="fname"
+                        type="text"
+                        class="form-control"
+                        placeholder="First Name"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="control-label mb-1">Last Name</label>
+                      <input
+                        name="lname"
+                        type="text"
+                        class="form-control"
+                        placeholder="Last Name"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="control-label mb-1">Dob</label>
+                      <input
+                        name="dob"
+                        id="datetimepicker1"
+                        type="text"
+                        class="form-control"
+                        placeholder="DOB"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="control-label mb-1">Age</label>
+                      <input
+                        name="age"
+                        readonly
+                        type="number"
+                        class="form-control"
+                        placeholder="Age"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="control-label mb-1">Contact</label>
+                      <input
+                        name="contact"
+                        type="number"
+                        class="form-control"
+                        placeholder="Contact"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="control-label mb-1">Gender</label>
+                      <select name="gender" id="select" class="form-control">
+                        <option value="">Please select</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="others">Others</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                <hr />
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="control-label mb-1">Address Line</label>
+                      <input
+                        name="address"
+                        type="text"
+                        class="form-control"
+                        placeholder="Address Line"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="control-label mb-1">City</label>
+                      <input
+                        name="city"
+                        type="text"
+                        class="form-control"
+                        placeholder="City"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="control-label mb-1">Taluk</label>
+                      <input
+                        name="taluk"
+                        type="text"
+                        class="form-control"
+                        placeholder="Taluk"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="control-label mb-1">State</label>
+                      <input
+                        name="state"
+                        type="text"
+                        class="form-control"
+                        placeholder="State"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="control-label mb-1">Country</label>
+                      <input
+                        name="country"
+                        type="text"
+                        class="form-control"
+                        placeholder="Country"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="control-label mb-1">Pincode</label>
+                      <input
+                        name="pincode"
+                        type="text"
+                        class="form-control"
+                        placeholder="Pincode"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <hr />
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label class="control-label mb-1">Adhar No</label>
+                      <input
+                        name="adhar"
+                        type="number"
+                        class="form-control"
+                        placeholder="Adhar No"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="control-label mb-1">Email</label>
+                      <input
+                        name="email"
+                        type="mail"
+                        class="form-control"
+                        placeholder="Email"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="control-label mb-1">Language</label>
+                      <input
+                        name="language"
+                        type="text"
+                        class="form-control"
+                        placeholder="Language"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="control-label mb-1">Nationality</label>
+                      <input
+                        name="nationality"
+                        type="text"
+                        class="form-control"
+                        placeholder="Nationality"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="control-label mb-1">Address2</label>
+                      <input
+                        name="address2"
+                        type="text"
+                        class="form-control"
+                        placeholder="address2"
+                      />
+                    </div>
+                  </div>
+                </div>
+                <hr />
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="control-label mb-1">Status</label>
+                      <input
+                        name="status"
+                        type="text"
+                        class="form-control"
+                        placeholder="status"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="control-label mb-1">Advance</label>
+                      <input
+                        name="advance"
+                        type="number"
+                        class="form-control"
+                        placeholder="Advance"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="control-label mb-1"
+                        >Emergency_contact_name</label
+                      >
+                      <input
+                        name="emergency_contact_name"
+                        type="text"
+                        class="form-control"
+                        placeholder="Emergency contact name"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="control-label mb-1"
+                        >Emergency contact number
+                      </label>
+                      <input
+                        name="emergency_contact_number"
+                        type="number"
+                        class="form-control"
+                        placeholder="Emergency contact number"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label class="switch switch-text switch-primary">
+                        <input
+                          id="reference_switch"
+                          type="checkbox"
+                          class="switch-input"
+                          checked="true"
+                        />
+                        <span
+                          data-on="On"
+                          data-off="Off"
+                          class="switch-label"
+                        ></span>
+                        <span class="switch-handle"></span>
+                      </label>
+
+                      <label class="control-label mb-1">Reference</label>
+                      <input
+                        id="reference"
+                        name="reference"
+                        type="text"
+                        class="form-control"
+                        placeholder="Reference Name"
+                      />
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label class="control-label mb-1">Others details</label>
+                      <textarea
+                        name="others_details"
+                        type="text"
+                        class="form-control"
+                        placeholder="Others details"
+                      ></textarea>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <button
+                      id="add-button"
+                      type="button"
+                      class="col-md-3 btn btn-lg btn-info btn-block float-right"
+                    >
+                      <i class="pe-7s-add-user"></i>&nbsp;
+                      <span id="payment-button-amount">Add</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- .card -->
+      </div>
+      <!--/.col-->
+    </div>
+  </form>
+</div>
+<!-- main form panel end -->
+
+<!-- content-wrapper ends -->
+<%- include("layout/footer1")-%>
+<script src="js/_common/moment.min.js"></script>
+<script src="js/_common/bootstrap-datetimepicker.min.js"></script>
+<!--Local Stuff-->
+<script>
+  let data_url = `./../module/patient/adddata`;
+  let staff_id = "<%- session._id %>";
+  console.log(staff_id);
+  jQuery(document).ready(function ($) {
+    $.fn.serializeObject = function () {
+      var o = {};
+      var a = this.serializeArray();
+      let obj = { name: "staff_id", value: staff_id };
+      a.push(obj);
+      $.each(a, function () {
+        if (o[this.name]) {
+          if (!o[this.name].push) {
+            o[this.name] = [o[this.name]];
+          }
+          o[this.name].push(this.value || "");
+        } else {
+          o[this.name] = this.value || "";
+        }
+      });
+      return o;
+    };
+
+    $("#reference_switch").on("click", function () {
+      if ($(this).prop("checked")) {
+        $("#reference").show();
+      } else {
+        $("#reference").hide();
+      }
+    });
+
+    $("#add-button").on("click", function () {
+      var data = $("#data_form").serializeObject();
+
+      $.post(
+        data_url,
+        { data: data, swtch: "add_data" },
+        function (data, status) {
+          $("#data_form")[0].reset();
+          iziToast.info({
+            id: "ERROR",
+            title: data,
+            position: "topRight",
+            transitionIn: "bounceInRight",
+          });
+        }
+      );
+    });
+
+    // date pipcker
+    $("#datetimepicker1").datetimepicker({
+      viewMode: "years",
+      format: "YYYY-MM-DD",
+      ignoreReadonly: true,
+    });
+
+    $(function () {
+      $("#datetimepicker9").datetimepicker({
+        viewMode: "years",
+        format: "YYYY-MM-DD",
+      });
+    });
+
+    $("#datetimepicker1").on("dp.change", function (e) {
+      jQuery("input[name='age']").val(
+        moment().diff(moment(e.date.format(e.date._f), "YYYY-MM-DD"), "years")
+      );
+    });
+  });
+</script>
+
+<%- include("layout/footer2")-%>

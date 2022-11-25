@@ -4,6 +4,7 @@ const sessions = require('express-session');
 const bodyParser = require('body-parser');
 const cookieParser = require("cookie-parser");
 const fs = require('fs');
+const authId= require('./auth'); 
 
 const app = express();
 const path = require('path');
@@ -21,6 +22,7 @@ app.use(sessions({
     resave: false
 }));
 
+
 app.use(cookieParser());
 app.set("views", "./views");
 app.set("view engine", "ejs");
@@ -28,6 +30,7 @@ app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 app.use(express.static("./public"));
 
 app.use(function (req, res, next) {
+	   /*
 	   session = req.session;
 	   session.role = "admin";
 	   session.mainrole = "admin";
@@ -35,6 +38,7 @@ app.use(function (req, res, next) {
 	   session.user_name = "Developer";
 	   session.branch = "main";
 	   session._id = "admin";	
+	   */
 	
    res.locals = {
      APP_NAME: "Ashian Care",
@@ -52,16 +56,14 @@ isAdmin = (req, res, next) => {
   req.session.mainrole == "admin" ? next() : res.redirect('/login');
 }
 
-
-
-
 app.use("/admin",isAdmin, require('./routes/admin')); 
-
+app.use("/", require('./routes/public')); 
  
 app.use("/module",require('./routes/module'));
 
 app.get('/', (req, res) => { 
-if(!req.session.mainrole){ res.redirect('/login'); return false; }	
+//if(!req.session.mainrole){ res.redirect('/login'); return false; }	// Force login as home screen
+res.redirect('/home'); return false;
 switch(req.session.mainrole) { 
 
   case 'admin':
@@ -84,6 +86,24 @@ app.get('/logout', (req, res) => {
 	req.session.destroy();
 	res.redirect('/');
 	return false;
+});
+
+
+app.get('/login', (req, res) => {
+  if(req.session.role){ res.redirect('/'); return false; }	
+  res.render("public/login");
+});
+ 
+app.post('/login', async (req, res) => { 
+  let auth = await authId(res,req,req.body); 
+	if(auth._id){
+	res.send("Done")
+	} else { res.send(auth) }
+});
+
+app.get('/register', (req, res) => {
+  if(req.user){ res.redirect('/'); return false; }	
+  res.render("public/register");
 });
 
 let numUsers = 0;

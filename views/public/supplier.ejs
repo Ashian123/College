@@ -1,0 +1,338 @@
+<%- include("layout/header1")-%>
+<link
+  rel="stylesheet"
+  href="assets/css/lib/datatable/dataTables.bootstrap.min.css"
+/>
+<%- include("layout/header2")-%> <%- include("layout/NavBar")-%>
+<!-- content-wrapper starts -->
+<!-- Content -->
+<div class="content" style="min-height: 78vh">
+  <!-- Animated -->
+  <div class="animated fadeIn">
+    <!-- Orders -->
+    <div class="orders">
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="card">
+            <div class="card-body">
+              <h4 class="box-title">Supplier</h4>
+              <button
+                class="btn btn-sm btn-outline-dark float-right"
+                id="add_formsdata"
+              >
+                Add
+              </button>
+            </div>
+            <div class="card-body">
+              <div
+                class="col-md-5 float-right text-center"
+                id="pagination"
+              ></div>
+              <div class="col-md-12 table-stats order-table ov-h">
+                <div class="wrapper">
+                  <table class="table table-hover" id="dataTable">
+                    <thead>
+                      <tr>
+                        <th class="serial">Name</th>
+                        <th class="serial">Mobile</th>
+                        <th>Created Date</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                  </table>
+                </div>
+              </div>
+              <!-- /.table-stats -->
+            </div>
+          </div>
+          <!-- /.card -->
+        </div>
+        <!-- /.col-lg-12 -->
+      </div>
+    </div>
+    <!-- /.orders -->
+
+    <!-- /#add-category -->
+  </div>
+  <!-- .animated -->
+</div>
+<!-- /.content -->
+
+<!-- Modal formsdata-->
+<div
+  class="modal fade"
+  id="DataModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="DataModal"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">DATA ADD</h5>
+        <input hidden id="selected_node" value="" />
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <input hidden id="action" value="" />
+      <input hidden id="data_id" value="" />
+
+      
+      <form id="data_form">
+        <div class="modal-body p-5">
+          <div class="form-group">
+            <label for="exampleInputEmail1">S_id</label>
+            <input
+              type="number"
+              class="form-control"
+              name="t_formsdata_s_id"
+              placeholder="s_id"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">S_Name</label>
+            <input
+              type="text"
+              class="form-control"
+              name="t_formsdata_s_name"
+              placeholder="s_name"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">S_Email</label>
+            <input
+              type="text"
+              class="form-control"
+              name="t_formsdata_s_email"
+              placeholder="s_email"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">S_note</label>
+            <input
+              type="text"
+              class="form-control"
+              name="t_formsdata_s_note"
+              placeholder="s_note"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">S_Phone</label>
+            <input
+              type="number"
+              class="form-control"
+              name="t_formsdata_s_phone"
+              placeholder="s_phone"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">S_Address</label>
+            <input
+              type="text"
+              class="form-control"
+              name="t_formsdata_s_address"
+              placeholder="s_address"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">S_Image</label>
+            <input
+              type="text"
+              class="form-control"
+              name="t_formsdata_s_img"
+              placeholder="s_img"
+            />
+          </div>
+          <div class="form-group">
+            <label for="exampleInputEmail1">Status</label>
+            <select  id="select_status" class="form-control">
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+            </select status>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-sm btn-outline-success _submit_data"
+            data-dismiss="modal"
+          >
+            Submit
+          </button>
+          <button
+            type="button"
+            class="btn btn-sm btn-secondary"
+            data-dismiss="modal"
+          >
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- content-wrapper ends -->
+<%- include("layout/footer1")-%>
+<script src="/admin-staff/js/devs/bundle.base.js"></script>
+<script src="assets/js/lib/data-table/datatables.min.js"></script>
+<script src="assets/js/lib/data-table/dataTables.bootstrap.min.js"></script>
+<!--Local Stuff-->
+<script>
+  jQuery(document).ready(function ($) {
+    let ssr = `./../module/supplier/ssr`;
+    let data_url = `./../module/supplier/handler`;
+    var index = $("#dataTable").find("th:last").index();
+    var table = $("#dataTable").DataTable({
+      processing: true,
+      serverSide: true,
+      lengthMenu: [
+        [5, 10, 20, 25, 50, -1],
+        [5, 10, 20, 25, 50, "All"],
+      ],
+      order: [[index - 1, "desc"]],
+      ajax: {
+        url: ssr,
+        type: "POST",
+      },
+      columns: [
+        { data: "s_name" },
+        { data: "s_phone" },
+        { data: "createdAt" },
+        { data: "_id" },
+      ],
+      columnDefs: [
+        {
+          render: function (data, type, row) {
+            pay_btn =
+              "<button data-id = '" +
+              data +
+              "' class = 'btn btn-sm btn-outline-danger delete_data' title = 'delete payment type' ><i class='mdi menu-icon mdi-delete'></i></button>";
+
+            pay_btn +=
+              "<button data-id = '" +
+              data +
+              "' class = 'btn btn-sm btn-outline-info edit_data ml-1' title = 'edit payment type' ><i class='mdi menu-icon mdi-delete'></i></button>";
+
+            return pay_btn;
+          },
+          targets: index,
+        },
+      ],
+    }); // datatable ending...
+
+    $("#add_formsdata").on("click", function () {
+      //$('#data_form')[0].reset();
+      $("#action").val("addData");
+      $(".modal-title").html("ADD DATA");
+      $("#action").val("addData");
+      $("#DataModal").modal("show");
+      //data_modal.show();
+    });
+
+    $("#data_details").on("click", ".data_edit", function () {
+      $("input[name='t_formsdata_title']").val($(this).data("title"));
+      $("textarea[name='t_formsdata_description']").val(
+        $(this).data("description")
+      );
+      $(".modal-title").html("EDIT DATA");
+      $("#DataModal").modal("show");
+      $("#data_id").val($(this).data("id"));
+      $("#action").val("updateData");
+    });
+
+    $("#dataTable").on("click", ".delete_data", function () {
+      $("#data_id").val($(this).data("id"));
+      $("#action").val("change_status");
+      iziToast.show({
+        backgroundColor: "rgb(239, 35, 60, 60%)",
+        progressBar: true,
+        // color: 'dark',
+        theme: "dark", //
+        progressBarColor: "rgb(239, 35, 60)",
+        overlay: true,
+        displayMode: 1,
+        pauseOnHover: false,
+        timeout: false,
+        message: "Are you sure ? ",
+        position: "center",
+        buttons: [
+          [
+            '<button class = "btn btn-danger">Delete</button>',
+            function (instance, toast) {
+              $("._submit_data").click();
+              instance.hide({ transitionOut: "fadeOut" }, toast, "button");
+            },
+            true,
+          ],
+        ],
+      });
+    });
+    $("#dataTable").on("click", ".edit_data", function () {
+      $("#data_form")[0].reset();
+      $("#action").val("updateData");
+      $(".modal-title").html("EDIT DATA");
+      let m_id = $(this).data("id");
+      console.log(m_id);
+      $("#data_id").val(m_id);
+      $.post(
+        data_url,
+        {
+          swtch: "get_medi_data",
+          m_id: m_id,
+        },
+        function (data, status) {
+          $("input[name='t_formsdata_s_id']").val(data.s_id);
+          $("input[name='t_formsdata_s_name']").val(data.s_name);
+          $("input[name='t_formsdata_s_email']").val(data.s_email);
+          $("input[name='t_formsdata_s_note']").val(data.s_note);
+          $("input[name='t_formsdata_s_phone']").val(data.s_phone);
+          $("input[name='t_formsdata_s_address']").val(data.s_address);
+          $("input[name='t_formsdata_s_img']").val(data.s_img);
+          $("input[name='t_formsdata_status']").val(data.status);
+          $("#DataModal").modal("show");
+        }
+      );
+    });
+
+    $("._submit_data,.confirm_delete").on("click", function () {
+      //   console.log($("input[name='t_formsdata_name']").val());
+      $.post(
+        data_url,
+        {
+          s_id: $("input[name='t_formsdata_s_id']").val(),
+          s_name: $("input[name='t_formsdata_s_name']").val(),
+          s_email: $("input[name='t_formsdata_s_email']").val(),
+          s_note: $("input[name='t_formsdata_s_note']").val(),
+          s_phone: $("input[name='t_formsdata_s_phone']").val(),
+          s_address: $("input[name='t_formsdata_s_address']").val(),
+          s_img: $("input[name='t_formsdata_s_img']").val(),
+          status: $("#select_status").val(),
+          swtch: $("#action").val(),
+          uid: $("#data_id").val(),
+        },
+        function (data, status) {
+          iziToast.success({
+            id: "ERROR",
+            title: data,
+            position: "topRight",
+            transitionIn: "bounceInRight",
+          });
+          $("#dataTable").DataTable().draw();
+          $("#data_form")[0].reset();
+          $("#DataModal,#DeleteModal").modal("hide");
+        }
+      );
+    });
+  });
+</script>
+
+<%- include("layout/footer2")-%>

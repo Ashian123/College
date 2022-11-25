@@ -1,21 +1,7 @@
 const express = require("express");
 const Adminrouter = express.Router();
 Adminrouter.use(express.static("./public"));
-const {
-  Sequelize,
-  sequelize,
-  DataTypes,
-  QueryTypes,
-} = require("./../../models/dbconnect");
-const per = require("../../config/user_permission");
-Patient = require("./../../models/patient.model.js")(
-  sequelize,
-  Sequelize,
-  DataTypes
-);
 let v_path = "admin/";
-
-Role = require("./../../models/role.model.js")(sequelize, Sequelize, DataTypes);
 
 Adminrouter.use(function (req, res, next) {
   Role.findOne({ where: { name: req.session.role, del: false } })

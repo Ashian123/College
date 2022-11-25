@@ -1,7 +1,7 @@
 // ************************************************
 //  Data API
 // ************************************************
-
+//console.log(view_prince());
 var DataData = (function() {
   // =============================
   // Private methods and propeties
@@ -29,6 +29,8 @@ var DataData = (function() {
   function loadData() {
     data_info = JSON.parse(sessionStorage.getItem('DataData'));
   }
+  
+  
   if (sessionStorage.getItem("DataData") != null) {
     loadData();
   }
@@ -191,7 +193,7 @@ function displayData() {
 	output += "<th class = 'w-20 bg-secondary text-light' >Eve</th>"
 	output += "<th class = 'w-20 bg-secondary text-light' >Night</th>"
 	output += "<th class = 'w-20 bg-secondary text-light' >Count</th>"
-	output += "<th class = 'w-20 bg-secondary text-light' >Total</th>";
+	if(view_prince()){ output += "<th class = 'w-20 bg-secondary text-light' >Total</th>"; }
 	output += "<th class = 'w-10 bg-secondary text-light' ></th>";
 	output += "</thead>";
   for(var i in data_infoArray) {
@@ -204,9 +206,9 @@ function displayData() {
 	  + `<td style = "padding: 1.25rem 0.5rem;"><input type='number' data-time = "eve" class='item-time form-control' data-name= "` + data_infoArray[i].name + `" value= "` + data_infoArray[i].eve + `"> </td>`
 	  + `<td style = "padding: 1.25rem 0.5rem;"><input type='number' data-time = "night" class='item-time form-control' data-name= "` + data_infoArray[i].name + `" value= "` + data_infoArray[i].night + `"> </td>`
 	  //+ `<td><input type='number' class='item-count form-control' data-name= "` + data_infoArray[i].name + `" value= "` + data_infoArray[i].count + `"> </td>`
-	  + "<td>" + data_infoArray[i].count + "</td>" 	  
-      + "<td>" + data_infoArray[i].total + "</td>" 
-	  + `<td><button class='delete-item btn btn-sm btn-outline-danger rounded-circle' data-name= "` + data_infoArray[i].name + `"><i class='mdi menu-icon mdi-delete'></i></button></td>`
+	  + "<td>" + data_infoArray[i].count + "</td>"; 	  
+      if(view_prince()){ output += "<td>" + data_infoArray[i].total + "</td>" }
+	  output += `<td><button class='delete-item btn btn-sm btn-outline-danger rounded-circle' data-name= "` + data_infoArray[i].name + `"><i class='mdi menu-icon mdi-delete'></i></button></td>`
       +  "</tr>";
   }
   output += "</table>";
@@ -215,6 +217,11 @@ function displayData() {
   $('.total-count').html(DataData.totalCount());
 }
 
+
+function ajax_saveData(db_data) {
+sessionStorage.setItem('DataData', JSON.stringify(db_data));
+data_info = JSON.parse(sessionStorage.getItem('DataData'));
+} 
 
 // Delete item button
 
