@@ -1215,4 +1215,63 @@ textarea.form-control {
     display: none;
   }
 }
+
+.logo_img{
+	width:10rem;
+}
 /*# sourceMappingURL=style.css.map */
+a {
+  text-decoration: none;
+}
+
+nav {
+	font-family: monospace;
+}
+
+ul {
+  background: white;
+	list-style: none;
+	margin: 0;
+	padding-left: 0;
+}
+
+li {
+	background: white;
+	display: block;
+	float: left;
+	padding: 1rem;
+	position: relative;
+	text-decoration: none;
+  transition-duration: 0.5s;
+}
+  
+
+
+li:hover {
+	background: red;
+	cursor: pointer;
+}
+
+ul li ul {
+	background: orange;
+	visibility: hidden;
+  opacity: 0;
+  min-width: 5rem;
+	position: absolute;
+  transition: all 0.5s ease;
+  margin-top: 1rem;
+	left: 0;
+  display: none;
+}
+
+ul li:hover > ul,
+ul li ul:hover {
+  visibility: visible;
+  opacity: 1;
+  display: block;
+}
+
+ul li ul li {
+	clear: both;
+  width: 100%;
+}
