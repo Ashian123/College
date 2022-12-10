@@ -8,7 +8,11 @@ Publicrouter.get("/", function (req, res) {
 });
 
 Publicrouter.get("/index", async (req, res) => {
-  res.render(v_path + "index.ejs");
+  res.render(v_path + "home_page.ejs");
+});
+
+Publicrouter.get("/home", async (req, res) => {
+  res.render(v_path + "home_page.ejs");
 });
 
 Publicrouter.get("/users", async (req, res) => {
